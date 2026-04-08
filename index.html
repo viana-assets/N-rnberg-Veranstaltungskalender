@@ -1745,14 +1745,6 @@ function toggleWishlist(idx, btn) {
   updateWishlistUI();
 }
 
-function updateWishlistUI() {
-  const count = wishlist.size;
-  const btn = document.getElementById('wl-open-btn');
-  document.getElementById('wl-count').textContent = count;
-  btn.style.display = count > 0 ? 'flex' : 'none';
-  renderWishlistPanel();
-}
-
 function renderWishlistPanel() {
   const body = document.getElementById('wl-body');
   const footer = document.getElementById('wl-footer');
