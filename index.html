@@ -2207,6 +2207,8 @@ function checkDeepLink() {
   if (idx >= 0) setTimeout(() => openModal(idx), 300);
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+
 // ── WIRE UP ALL CONTROLS ──────────────────────────────────────────────────────
 
 document.querySelectorAll('.pill').forEach(p => {
@@ -2216,11 +2218,6 @@ document.querySelectorAll('.pill').forEach(p => {
     activeFilter = p.dataset.cat;
     render();
   });
-});
-
-document.getElementById('search').addEventListener('input', e => {
-  searchTerm = e.target.value;
-  render();
 });
 
 document.getElementById('btn-list').addEventListener('click', () => {
@@ -2661,8 +2658,11 @@ document.getElementById('btn-personal').addEventListener('click', () => {
 });
 
 // ── PWA SERVICE WORKER ────────────────────────────────────────────────────────
+// Unregister old service workers to force fresh load
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(reg => reg.unregister());
+  });
 }
 
 window.openModal = openModal;
@@ -2676,6 +2676,8 @@ window.removeFromList = removeFromList;
 window.removeFromWishlist = removeFromWishlist;
 window.switchWlTab = switchWlTab;
 
+
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
