@@ -1391,9 +1391,9 @@ body.light .month-jump.has-events { color: #111318; }
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
 
 const CAT_COLORS = {
   festival: '#5b8ff9',
@@ -1951,8 +1951,8 @@ const firebaseConfig = {
   appId: "1:601542352068:web:a805455d36781b0afb7d91"
 };
 
-const fbApp = initializeApp(firebaseConfig);
-const db = getFirestore(fbApp);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 let publicCounts = {};
 
@@ -1962,7 +1962,7 @@ function eventKey(e) {
 
 async function loadPublicCounts() {
   try {
-    const snapshot = await getDocs(collection(db, 'event_going'));
+    const snapshot = await db.collection('event_going').get();
     publicCounts = {};
     snapshot.forEach(docSnap => {
       publicCounts[docSnap.id] = docSnap.data().count || 0;
@@ -1978,7 +1978,7 @@ async function incrementPublicGoing(e, delta) {
   const current = Math.max(0, (publicCounts[key] || 0) + delta);
   publicCounts[key] = current;
   try {
-    await setDoc(doc(db, 'event_going', key), { count: current });
+    await db.collection('event_going').doc(key).set({ count: current });
   } catch (err) {
     console.warn('Firebase write error:', err);
   }
@@ -2516,9 +2516,8 @@ let ratingsCache = {};
 async function loadRating(eventKey) {
   if (ratingsCache[eventKey] !== undefined) return ratingsCache[eventKey];
   try {
-    const { getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    const snap = await getDoc(doc(db, 'event_ratings', eventKey));
-    const data = snap.exists() ? snap.data() : { total: 0, count: 0 };
+    const snap = await db.collection('event_ratings').doc(eventKey).get();
+    const data = snap.exists ? snap.data() : { total: 0, count: 0 };
     ratingsCache[eventKey] = data;
     return data;
   } catch { return { total: 0, count: 0 }; }
@@ -2530,11 +2529,11 @@ async function submitRating(e, stars) {
   if (localStorage.getItem(userKey)) { showToast('Du hast bereits bewertet!'); return; }
   try {
 
-    const ref = doc(db, 'event_ratings', key);
-    const snap = await getDoc(ref);
-    const cur = snap.exists() ? snap.data() : { total: 0, count: 0 };
+    const ref = db.collection('event_ratings').doc(key);
+    const snap = await ref.get();
+    const cur = snap.exists ? snap.data() : { total: 0, count: 0 };
     const updated = { total: cur.total + stars, count: cur.count + 1 };
-    await setDoc(ref, updated);
+    await ref.set(updated);
     ratingsCache[key] = updated;
     localStorage.setItem(userKey, stars);
     showToast(`⭐ Bewertet mit ${stars} Stern${stars>1?'en':''}!`);
@@ -2636,8 +2635,7 @@ document.getElementById('sf-submit').addEventListener('click', async () => {
     submittedAt: new Date().toISOString()
   };
   try {
-    const { addDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    await addDoc(collection(db, 'event_submissions'), submission);
+    await db.collection('event_submissions').add(submission);
   } catch (e) { console.warn('Firebase submit error', e); }
   document.getElementById('submit-form-wrap').style.display = 'none';
   document.getElementById('submit-success').style.display = 'block';
