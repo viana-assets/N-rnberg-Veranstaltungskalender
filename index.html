@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nürnberg Events 2026</title>
+<meta name="description" content="Alle Events, Festivals, Kärwas und Feste in der Metropolregion Nürnberg 2026">
+<meta name="theme-color" content="#0e0f13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NBG Events">
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
@@ -891,8 +897,297 @@ footer {
   .stats-bar { gap: 1.2rem; }
   #map { height: 340px; }
   .countdown-days { font-size: 1.6rem; }
+  .search-suggestions { width: calc(100vw - 3rem); }
 }
-</style>
+
+/* ── BACK TO TOP ─────────────────────────────────────────────── */
+.back-to-top {
+  position: fixed;
+  bottom: 5rem;
+  right: 1.5rem;
+  width: 40px; height: 40px;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 16px;
+  z-index: 55;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s, transform 0.25s, color 0.15s;
+  pointer-events: none;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+/* ── TODAY HIGHLIGHT ─────────────────────────────────────────── */
+.event-row.today-event {
+  border-color: rgba(232,150,58,0.45);
+  background: linear-gradient(90deg, rgba(232,150,58,0.06) 0%, var(--surface) 100%);
+}
+.event-row.today-event::before { background: var(--accent); }
+.today-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px;
+  background: var(--accent); color: #0e0f13;
+  animation: pulse-today 2s infinite;
+}
+@keyframes pulse-today {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.event-card.today-event {
+  border-color: rgba(232,150,58,0.45);
+  box-shadow: 0 0 0 1px rgba(232,150,58,0.2);
+}
+
+/* ── COUNTDOWN ON CARDS ──────────────────────────────────────── */
+.card-countdown {
+  font-size: 10px; font-weight: 600;
+  color: var(--accent);
+  display: flex; align-items: center; gap: 3px;
+  margin-bottom: 6px;
+}
+.row-countdown {
+  font-size: 10px; font-weight: 600; color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── SEARCH SUGGESTIONS ──────────────────────────────────────── */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  z-index: 200;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  max-height: 280px;
+  overflow-y: auto;
+}
+.suggestion-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-size: 13px;
+}
+.suggestion-item:hover { background: rgba(255,255,255,0.06); }
+.suggestion-item + .suggestion-item { border-top: 1px solid var(--border); }
+.suggestion-cat {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 999px;
+  color: #0e0f13; white-space: nowrap; flex-shrink: 0;
+}
+.suggestion-name { flex: 1; font-weight: 500; }
+.suggestion-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+/* ── SIMILAR EVENTS ──────────────────────────────────────────── */
+.similar-section {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.similar-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.similar-items { display: flex; flex-direction: column; gap: 6px; }
+.similar-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+}
+.similar-item:hover { background: var(--surface2); border-color: rgba(255,255,255,0.15); }
+.similar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.similar-info { flex: 1; min-width: 0; }
+.similar-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.similar-date { font-size: 11px; color: var(--muted); }
+
+/* ── DARK / LIGHT MODE ───────────────────────────────────────── */
+body.light {
+  --bg: #f4f4f6;
+  --surface: #ffffff;
+  --surface2: #eceef2;
+  --border: rgba(0,0,0,0.08);
+  --text: #111318;
+  --muted: #6b7280;
+}
+body.light .sticky-bar { background: rgba(244,244,246,0.92); }
+body.light .month-jump { color: #6b7280; }
+body.light .month-jump.has-events { color: #111318; }
+.theme-toggle {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.theme-toggle:hover { border-color: rgba(255,255,255,0.2); }
+
+/* ── WEATHER BADGE ───────────────────────────────────────────── */
+.weather-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 999px;
+  background: rgba(96,165,250,0.1);
+  color: #60a5fa;
+  border: 1px solid rgba(96,165,250,0.25);
+}
+.weather-section {
+  background: rgba(96,165,250,0.06);
+  border: 1px solid rgba(96,165,250,0.15);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px;
+}
+.weather-icon { font-size: 1.8rem; }
+.weather-info { flex: 1; }
+.weather-temp { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; }
+.weather-desc { font-size: 11px; color: var(--muted); }
+
+/* ── STAR RATINGS ────────────────────────────────────────────── */
+.rating-section {
+  margin-top: 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.rating-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.stars-display { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.stars {
+  display: flex; gap: 3px;
+}
+.star {
+  font-size: 20px; cursor: pointer;
+  transition: transform 0.1s;
+  color: var(--muted);
+  line-height: 1;
+}
+.star:hover, .star.active { color: #fbbf24; transform: scale(1.15); }
+.stars-avg { font-size: 12px; color: var(--muted); }
+.stars-count { font-size: 11px; color: var(--muted); }
+.star-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 999px;
+  background: rgba(251,191,36,0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+/* ── EVENT SUBMIT FORM ───────────────────────────────────────── */
+.submit-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  z-index: 60;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.submit-fab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+.submit-modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8); z-index: 110;
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 1rem;
+}
+.submit-modal-bg.open { display: flex; }
+.submit-modal {
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  max-width: 480px; width: 100%;
+  padding: 2rem;
+  max-height: 90vh; overflow-y: auto;
+}
+.submit-modal h2 {
+  font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800;
+  margin-bottom: 1.2rem;
+}
+.form-group { margin-bottom: 1rem; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--muted); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 12px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(232,150,58,0.4); }
+.form-textarea { min-height: 80px; resize: vertical; }
+.form-select option { background: var(--surface2); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-submit {
+  width: 100%; padding: 11px;
+  background: var(--accent); color: #0e0f13;
+  border: none; border-radius: 9px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; transition: opacity 0.15s; margin-top: 0.5rem;
+}
+.form-submit:hover { opacity: 0.9; }
+.form-success {
+  text-align: center; padding: 2rem 0;
+  font-size: 2rem; margin-bottom: 0.5rem;
+}
+
+/* ── PERSONAL TAB ────────────────────────────────────────────── */
+.personal-wrap {
+  max-width: 1300px; margin: 1.5rem auto 4rem; padding: 0 1.5rem;
+  display: none;
+}
+.personal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+}
+.personal-header h2 {
+  font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+}
+.personal-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 8px; color: #a78bfa;
+  cursor: pointer; transition: all 0.15s;
+}
+.personal-export:hover { background: rgba(167,139,250,0.1); }
+.personal-empty { text-align: center; padding: 4rem 2rem; color: var(--muted); }
 </head>
 <body>
 
@@ -923,9 +1218,10 @@ footer {
 </div>
 
 <div class="controls">
-  <div class="search-wrap">
+  <div class="search-wrap" style="position:relative">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input id="search" type="text" placeholder="Suchen…">
+    <input id="search" type="text" placeholder="Suchen…" autocomplete="off">
+    <div class="search-suggestions" id="search-suggestions" style="display:none"></div>
   </div>
   <div class="filter-pills">
     <button class="pill active" data-cat="alle">Alle</button>
@@ -940,7 +1236,9 @@ footer {
     <button class="view-btn active" id="btn-list">≡ Liste</button>
     <button class="view-btn" id="btn-grid">⊞ Grid</button>
     <button class="view-btn" id="btn-map">🗺 Karte</button>
+    <button class="view-btn" id="btn-personal">📅 Meine</button>
   </div>
+  <button class="theme-toggle" id="theme-toggle">🌙 Dark</button>
 </div>
 
 <!-- STICKY NAV: month timeline + quick filters + sort -->
@@ -964,6 +1262,76 @@ footer {
 
 <div class="cal-wrap" id="cal"></div>
 <div class="map-wrap" id="map-wrap" style="display:none"><div id="map"></div></div>
+<div class="personal-wrap" id="personal-wrap">
+  <div class="personal-header">
+    <h2>📅 Meine Events</h2>
+    <button class="personal-export" id="personal-export-btn">📥 Als ICS exportieren</button>
+  </div>
+  <div id="personal-list"></div>
+</div>
+
+<!-- SUBMIT EVENT FAB -->
+<button class="submit-fab" id="submit-fab">➕ Event vorschlagen</button>
+
+<!-- SUBMIT EVENT MODAL -->
+<div class="submit-modal-bg" id="submit-modal-bg">
+  <div class="submit-modal">
+    <button class="modal-close" id="submit-close" style="position:absolute;top:1rem;right:1rem">×</button>
+    <h2>✏️ Event vorschlagen</h2>
+    <div id="submit-form-wrap">
+      <div class="form-group">
+        <label class="form-label">Event-Name *</label>
+        <input class="form-input" id="sf-name" placeholder="z.B. Sommerfest Gostenhof">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Startdatum *</label>
+          <input class="form-input" id="sf-start" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Enddatum</label>
+          <input class="form-input" id="sf-end" type="date">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ort / Location *</label>
+        <input class="form-input" id="sf-loc" placeholder="z.B. Nürnberg-Gostenhof">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Kategorie</label>
+          <select class="form-select" id="sf-cat">
+            <option value="festival">🎵 Festival</option>
+            <option value="kaerwa" selected>🍺 Kärwa / Kirchweih</option>
+            <option value="bierfest">🍺 Bierfest</option>
+            <option value="afterwork">🌅 After Work</option>
+            <option value="sonstige">✨ Sonstiges</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Eintritt</label>
+          <select class="form-select" id="sf-free">
+            <option value="true">Kostenlos</option>
+            <option value="false">Kostenpflichtig</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Beschreibung</label>
+        <textarea class="form-textarea" id="sf-desc" placeholder="Kurze Beschreibung des Events…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Website / Ticket-Link</label>
+        <input class="form-input" id="sf-ticket" placeholder="https://…">
+      </div>
+      <button class="form-submit" id="sf-submit">📨 Vorschlag einreichen</button>
+    </div>
+    <div id="submit-success" style="display:none">
+      <div class="form-success">🎉</div>
+      <p style="text-align:center;font-size:14px;color:var(--muted)">Danke für deinen Vorschlag!<br>Er wird nach Prüfung hinzugefügt.</p>
+    </div>
+  </div>
+</div>
 
 <div class="modal-bg" id="modal-bg">
   <div class="modal" id="modal">
@@ -976,7 +1344,10 @@ footer {
     </div>
     <div class="modal-desc" id="m-desc"></div>
     <div class="modal-badges" id="m-badges"></div>
+    <div id="m-weather"></div>
     <div class="modal-actions" id="m-actions"></div>
+    <div id="m-rating"></div>
+    <div id="m-similar"></div>
   </div>
 </div>
 
@@ -1012,6 +1383,9 @@ footer {
     </button>
   </div>
 </div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="back-to-top" title="Nach oben">↑</button>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -1275,12 +1649,20 @@ function render() {
   if (viewMode === 'map') {
     document.getElementById('cal').style.display = 'none';
     document.getElementById('map-wrap').style.display = 'block';
+    document.getElementById('personal-wrap').style.display = 'none';
     renderMap(filtered);
     return;
   }
-
+  if (viewMode === 'personal') {
+    document.getElementById('cal').style.display = 'none';
+    document.getElementById('map-wrap').style.display = 'none';
+    document.getElementById('personal-wrap').style.display = 'block';
+    renderPersonalTab();
+    return;
+  }
   document.getElementById('cal').style.display = '';
   document.getElementById('map-wrap').style.display = 'none';
+  document.getElementById('personal-wrap').style.display = 'none';
 
   const byMonth = {};
   filtered.forEach(e => {
@@ -1374,12 +1756,26 @@ function updateActiveMonthOnScroll() {
   blocks.forEach(b => observer.observe(b));
 }
 
+function getDaysUntil(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.round((new Date(dateStr) - today) / 86400000);
+}
+
+function countdownLabel(diff) {
+  if (diff === 0) return '<span class="today-badge">HEUTE</span>';
+  if (diff === 1) return '<span class="row-countdown">⏳ Morgen</span>';
+  if (diff > 0 && diff <= 14) return `<span class="row-countdown">⏳ in ${diff} Tagen</span>`;
+  return '';
+}
+
 function eventRowHTML(e) {
   const col = CAT_COLORS[e.cat] || '#888';
   const sd = new Date(e.start);
   const idx = events.indexOf(e);
   const isSaved = wishlist.has(e.name + e.start);
-  return `<div class="event-row" data-idx="${idx}" style="--cat-color:${col}">
+  const diff = getDaysUntil(e.start);
+  const isToday = diff === 0;
+  return `<div class="event-row${isToday ? ' today-event' : ''}" data-idx="${idx}" style="--cat-color:${col}">
     <div class="event-date-col">
       <div class="event-day">${sd.getDate()}.</div>
       <div class="event-month">${MONTHS_S[sd.getMonth()]}.</div>
@@ -1389,6 +1785,7 @@ function eventRowHTML(e) {
       <div class="event-name">${e.name}</div>
       <div class="event-loc">📍 ${e.loc}</div>
       <div class="event-meta">
+        ${countdownLabel(diff)}
         <span class="badge badge-date">${dateStr(e.start,e.end)}</span>
         ${e.free ? '<span class="badge badge-free">★ Kostenlos</span>' : (e.price && e.price!=='TBC' && e.price!=='Ausverkauft' ? `<span class="badge badge-date">${e.price.split('(')[0].trim()}</span>` : '')}
         ${e.new ? '<span class="badge badge-new">NEU 2026</span>' : ''}
@@ -1411,7 +1808,11 @@ function eventRowHTML(e) {
 function eventCardHTML(e) {
   const col = CAT_COLORS[e.cat] || '#888';
   const idx = events.indexOf(e);
-  return `<div class="event-card" data-idx="${idx}" style="--cat-color:${col}">
+  const diff = getDaysUntil(e.start);
+  const isToday = diff === 0;
+  const cdLabel = diff === 0 ? '🔴 HEUTE' : diff === 1 ? '⏳ Morgen' : diff > 0 && diff <= 14 ? `⏳ in ${diff} Tagen` : '';
+  return `<div class="event-card${isToday ? ' today-event' : ''}" data-idx="${idx}" style="--cat-color:${col}">
+    ${cdLabel ? `<div class="card-countdown">${cdLabel}</div>` : ''}
     <div class="card-date">${dateStr(e.start,e.end)} · ${DAYS[new Date(e.start).getDay()]}.</div>
     <div class="card-name">${e.name}</div>
     <div class="card-loc">📍 ${e.loc}</div>
@@ -1531,6 +1932,10 @@ function openModal(idx) {
   document.getElementById('m-actions').innerHTML = actions;
   document.getElementById('modal-bg').classList.add('open');
   history.replaceState(null, '', `#${encodeURIComponent(e.name)}`);
+  // Async: weather, ratings, similar
+  renderWeather(e);
+  renderRating(e);
+  renderSimilarEvents(idx);
 }
 
 // ── PUBLIC GOING COUNTER (Firebase Firestore) ────────────────────────────────
@@ -1949,7 +2354,319 @@ loadPublicCounts().then(() => {
   checkDeepLink();
 });
 
-// Expose functions used in inline onclick handlers to global scope
+// ── BACK TO TOP ───────────────────────────────────────────────────────────────
+const backBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backBtn.classList.toggle('visible', window.scrollY > 400);
+});
+backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// ── SEARCH SUGGESTIONS ────────────────────────────────────────────────────────
+const suggestionsEl = document.getElementById('search-suggestions');
+
+function showSuggestions(q) {
+  if (!q || q.length < 2) { suggestionsEl.style.display = 'none'; return; }
+  const matches = events.filter(e =>
+    e.name.toLowerCase().includes(q) ||
+    e.loc.toLowerCase().includes(q) ||
+    (e.genre||'').toLowerCase().includes(q)
+  ).slice(0, 7);
+  if (!matches.length) { suggestionsEl.style.display = 'none'; return; }
+  suggestionsEl.innerHTML = matches.map(e => {
+    const col = CAT_COLORS[e.cat] || '#888';
+    const idx = events.indexOf(e);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const diff = Math.round((new Date(e.start) - today) / 86400000);
+    const countdown = diff === 0 ? '🔴 Heute!' : diff > 0 ? `in ${diff}d` : '';
+    return `<div class="suggestion-item" onclick="selectSuggestion(${idx})">
+      <span class="suggestion-cat" style="background:${col}">${CAT_LABELS[e.cat]}</span>
+      <span class="suggestion-name">${e.name}</span>
+      <span class="suggestion-date">${countdown || dateStr(e.start, e.end)}</span>
+    </div>`;
+  }).join('');
+  suggestionsEl.style.display = 'block';
+}
+
+function selectSuggestion(idx) {
+  suggestionsEl.style.display = 'none';
+  document.getElementById('search').value = '';
+  searchTerm = '';
+  render();
+  setTimeout(() => openModal(idx), 50);
+}
+window.selectSuggestion = selectSuggestion;
+
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value;
+  showSuggestions(e.target.value.toLowerCase());
+  render();
+});
+document.getElementById('search').addEventListener('focus', e => {
+  if (e.target.value.length >= 2) showSuggestions(e.target.value.toLowerCase());
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) suggestionsEl.style.display = 'none';
+});
+
+// ── SIMILAR EVENTS IN MODAL ───────────────────────────────────────────────────
+function renderSimilarEvents(currentIdx) {
+  const current = events[currentIdx];
+  const similar = events
+    .filter((e, i) => i !== currentIdx && e.cat === current.cat)
+    .sort((a, b) => {
+      // prefer events close in time to current
+      const da = Math.abs(new Date(a.start) - new Date(current.start));
+      const db = Math.abs(new Date(b.start) - new Date(current.start));
+      return da - db;
+    })
+    .slice(0, 3);
+  if (!similar.length) return;
+  const col = CAT_COLORS[current.cat] || '#888';
+  document.getElementById('m-similar').innerHTML = `
+    <div class="similar-section">
+      <div class="similar-title">Ähnliche Events</div>
+      <div class="similar-items">
+        ${similar.map(e => {
+          const idx = events.indexOf(e);
+          const c = CAT_COLORS[e.cat] || '#888';
+          return `<button class="similar-item" onclick="openModal(${idx})">
+            <span class="similar-dot" style="background:${c}"></span>
+            <span class="similar-info">
+              <span class="similar-name">${e.name}</span>
+              <span class="similar-date">📅 ${dateStr(e.start, e.end)} · 📍 ${e.loc}</span>
+            </span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+window.renderSimilarEvents = renderSimilarEvents;
+
+// ── DARK / LIGHT MODE ────────────────────────────────────────────────────────
+let isDark = localStorage.getItem('viana_theme') !== 'light';
+function applyTheme() {
+  document.body.classList.toggle('light', !isDark);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = isDark ? '🌙 Dark' : '☀️ Light';
+}
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  isDark = !isDark;
+  localStorage.setItem('viana_theme', isDark ? 'dark' : 'light');
+  applyTheme();
+});
+applyTheme();
+
+// ── WEATHER ───────────────────────────────────────────────────────────────────
+const WEATHER_ICONS = {
+  0:'☀️',1:'☀️',2:'⛅',3:'☁️',45:'🌫',48:'🌫',
+  51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',
+  71:'🌨',73:'🌨',75:'❄️',80:'🌦',81:'🌧',82:'⛈',
+  95:'⛈',96:'⛈',99:'⛈'
+};
+const WEATHER_DESCS = {
+  0:'Sonnig',1:'Überwiegend sonnig',2:'Teils bewölkt',3:'Bewölkt',
+  45:'Nebel',48:'Nebel',51:'Leichter Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',
+  61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',
+  75:'Starker Schnee',80:'Regenschauer',81:'Starke Regenschauer',82:'Gewitterschauer',
+  95:'Gewitter',96:'Gewitter',99:'Schwere Gewitter'
+};
+const weatherCache = {};
+
+async function loadWeather(lat, lon, dateStr) {
+  const key = `${lat},${lon},${dateStr}`;
+  if (weatherCache[key]) return weatherCache[key];
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Berlin&start_date=${dateStr}&end_date=${dateStr}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const result = {
+      code: data.daily.weathercode[0],
+      max: Math.round(data.daily.temperature_2m_max[0]),
+      min: Math.round(data.daily.temperature_2m_min[0])
+    };
+    weatherCache[key] = result;
+    return result;
+  } catch { return null; }
+}
+
+async function renderWeather(e) {
+  const weatherEl = document.getElementById('m-weather');
+  if (!weatherEl) return;
+  // Only show for events within 14 days
+  const diff = getDaysUntil(e.start);
+  if (diff < 0 || diff > 14) { weatherEl.innerHTML = ''; return; }
+  weatherEl.innerHTML = `<div class="weather-section" style="opacity:0.5"><span>🌤</span><span style="font-size:12px;color:var(--muted)">Wetter wird geladen…</span></div>`;
+  const coords = getCoords(e.loc);
+  const w = await loadWeather(coords[0], coords[1], e.start);
+  if (!w) { weatherEl.innerHTML = ''; return; }
+  weatherEl.innerHTML = `
+    <div class="weather-section">
+      <span class="weather-icon">${WEATHER_ICONS[w.code] || '🌤'}</span>
+      <div class="weather-info">
+        <div class="weather-temp">${w.max}°C / ${w.min}°C</div>
+        <div class="weather-desc">${WEATHER_DESCS[w.code] || 'Wetter'} · ${diff === 0 ? 'Heute' : `in ${diff} Tagen`}</div>
+      </div>
+    </div>`;
+}
+
+// ── STAR RATINGS (Firebase) ───────────────────────────────────────────────────
+let ratingsCache = {};
+
+async function loadRating(eventKey) {
+  if (ratingsCache[eventKey] !== undefined) return ratingsCache[eventKey];
+  try {
+    const { getDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const snap = await getDoc(doc(db, 'event_ratings', eventKey));
+    const data = snap.exists() ? snap.data() : { total: 0, count: 0 };
+    ratingsCache[eventKey] = data;
+    return data;
+  } catch { return { total: 0, count: 0 }; }
+}
+
+async function submitRating(e, stars) {
+  const key = eventKey(e);
+  const userKey = 'viana_rated_' + key;
+  if (localStorage.getItem(userKey)) { showToast('Du hast bereits bewertet!'); return; }
+  try {
+    const { doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const ref = doc(db, 'event_ratings', key);
+    const snap = await getDoc(ref);
+    const cur = snap.exists() ? snap.data() : { total: 0, count: 0 };
+    const updated = { total: cur.total + stars, count: cur.count + 1 };
+    await setDoc(ref, updated);
+    ratingsCache[key] = updated;
+    localStorage.setItem(userKey, stars);
+    showToast(`⭐ Bewertet mit ${stars} Stern${stars>1?'en':''}!`);
+    renderRating(e);
+  } catch { showToast('Bewertung fehlgeschlagen'); }
+}
+window.submitRating = submitRating;
+
+async function renderRating(e) {
+  const el = document.getElementById('m-rating');
+  if (!el) return;
+  const key = eventKey(e);
+  const userKey = 'viana_rated_' + key;
+  const alreadyRated = localStorage.getItem(userKey);
+  const data = await loadRating(key);
+  const avg = data.count > 0 ? (data.total / data.count).toFixed(1) : null;
+  const idx = events.indexOf(e);
+  el.innerHTML = `
+    <div class="rating-section">
+      <div class="rating-title">⭐ Bewertung</div>
+      <div class="stars-display">
+        ${avg ? `<span class="stars-avg">${avg} ⭐</span><span class="stars-count">(${data.count} Bewertung${data.count!==1?'en':''})</span>` : '<span class="stars-count">Noch keine Bewertungen</span>'}
+      </div>
+      ${alreadyRated
+        ? `<div style="font-size:12px;color:var(--muted)">Du hast mit ${alreadyRated} ⭐ bewertet.</div>`
+        : `<div class="stars" id="star-row-${idx}">
+            ${[1,2,3,4,5].map(n => `<span class="star" onclick="submitRating(events[${idx}],${n})" title="${n} Stern${n>1?'e':''}">☆</span>`).join('')}
+          </div>`
+      }
+    </div>`;
+}
+
+// ── PERSONAL TAB ─────────────────────────────────────────────────────────────
+function renderPersonalTab() {
+  const wrap = document.getElementById('personal-wrap');
+  const list = document.getElementById('personal-list');
+  const going = events.filter(e => goingList.has(e.name + e.start))
+    .sort((a,b) => a.start.localeCompare(b.start));
+  if (!going.length) {
+    list.innerHTML = `<div class="personal-empty">
+      <div style="font-size:3rem;margin-bottom:1rem">📅</div>
+      <p>Du hast noch keine Events markiert.<br>Klick auf <strong>„Ich gehe hin!"</strong> bei einem Event.</p>
+    </div>`;
+    return;
+  }
+  list.innerHTML = `<div class="events-list">${going.map(e => eventRowHTML(e)).join('')}</div>`;
+  list.querySelectorAll('[data-idx]').forEach(el => {
+    el.addEventListener('click', () => openModal(parseInt(el.dataset.idx)));
+  });
+}
+
+document.getElementById('personal-export-btn').addEventListener('click', () => {
+  const going = events.filter(e => goingList.has(e.name + e.start))
+    .sort((a,b) => a.start.localeCompare(b.start));
+  if (!going.length) { showToast('Keine Events in deiner Liste'); return; }
+  const vevents = going.map(e => {
+    const dtstart = e.start.replace(/-/g,'');
+    const endDate = new Date(e.end); endDate.setDate(endDate.getDate()+1);
+    const dtend = endDate.toISOString().slice(0,10).replace(/-/g,'');
+    return [
+      'BEGIN:VEVENT',
+      `UID:${e.name.replace(/\s/g,'-')}-${e.start}@viana`,
+      `DTSTART;VALUE=DATE:${dtstart}`,
+      `DTEND;VALUE=DATE:${dtend}`,
+      `SUMMARY:${e.name}`,
+      `LOCATION:${e.loc}`,
+      'END:VEVENT'
+    ].join('\r\n');
+  }).join('\r\n');
+  const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Viana Events//DE\r\n${vevents}\r\nEND:VCALENDAR`;
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Meine_NBG_Events_2026.ics';
+  a.click();
+  showToast('📥 Alle Events als ICS gespeichert');
+});
+
+// ── EVENT SUBMIT FORM ─────────────────────────────────────────────────────────
+document.getElementById('submit-fab').addEventListener('click', () => {
+  document.getElementById('submit-modal-bg').classList.add('open');
+});
+document.getElementById('submit-close').addEventListener('click', () => {
+  document.getElementById('submit-modal-bg').classList.remove('open');
+});
+document.getElementById('sf-submit').addEventListener('click', async () => {
+  const name = document.getElementById('sf-name').value.trim();
+  const start = document.getElementById('sf-start').value;
+  const loc = document.getElementById('sf-loc').value.trim();
+  if (!name || !start || !loc) { showToast('Bitte Name, Datum und Ort ausfüllen'); return; }
+  const submission = {
+    name, start,
+    end: document.getElementById('sf-end').value || start,
+    loc,
+    cat: document.getElementById('sf-cat').value,
+    free: document.getElementById('sf-free').value === 'true',
+    desc: document.getElementById('sf-desc').value.trim(),
+    ticket: document.getElementById('sf-ticket').value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+  try {
+    const { collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await addDoc(collection(db, 'event_submissions'), submission);
+  } catch (e) { console.warn('Firebase submit error', e); }
+  document.getElementById('submit-form-wrap').style.display = 'none';
+  document.getElementById('submit-success').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('submit-modal-bg').classList.remove('open');
+    document.getElementById('submit-form-wrap').style.display = 'block';
+    document.getElementById('submit-success').style.display = 'none';
+    ['sf-name','sf-start','sf-end','sf-loc','sf-desc','sf-ticket'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }, 2500);
+});
+
+// ── UPDATE VIEW TOGGLE FOR PERSONAL TAB ──────────────────────────────────────
+document.getElementById('btn-personal').addEventListener('click', () => {
+  viewMode = 'personal';
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-personal').classList.add('active');
+  document.getElementById('cal').style.display = 'none';
+  document.getElementById('map-wrap').style.display = 'none';
+  document.getElementById('personal-wrap').style.display = 'block';
+  renderPersonalTab();
+});
+
+// ── PWA SERVICE WORKER ────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
 window.openModal = openModal;
 window.toggleWishlist = toggleWishlist;
 window.toggleWishlistModal = toggleWishlistModal;
