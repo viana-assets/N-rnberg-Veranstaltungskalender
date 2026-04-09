@@ -482,6 +482,48 @@ function getCoords(loc) {
   return [49.452+(Math.random()-.5)*.04, 11.077+(Math.random()-.5)*.04];
 }
 
+// ── FIREBASE ──────────────────────────────────────────────────────────────────
+let db = null;
+let publicCounts = {};
+
+const FB_PROJECT = 'viana-events';
+const FB_API_KEY = 'AIzaSyDx-s-6yYdvRxP4Gy9GaWdOKBEfo8GpTXQ';
+const FB_BASE = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents`;
+
+
+function eventKey(e) {
+  return e.name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g,'_').slice(0,50)+'_'+e.start;
+}
+
+async function loadPublicCounts() {
+  try {
+    const res = await fetch(`${FB_BASE}/event_going?key=${FB_API_KEY}&pageSize=200`);
+    if(!res.ok) return;
+    const data = await res.json();
+    (data.documents||[]).forEach(doc => {
+      const key = doc.name.split('/').pop();
+      publicCounts[key] = parseInt(doc.fields?.count?.integerValue || 0);
+    });
+  } catch(err) { console.warn('Firebase load:', err); }
+}
+
+async function savePublicCount(e, delta) {
+  const key = eventKey(e);
+  const current = Math.max(0, (publicCounts[key] || 0) + delta);
+  publicCounts[key] = current;
+  try {
+    await fetch(`${FB_BASE}/event_going/${key}?key=${FB_API_KEY}&updateMask.fieldPaths=count`, {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({fields:{count:{integerValue: current}}})
+    });
+  } catch(err) { console.warn('Firebase save:', err); }
+  return current;
+}
+
+function getPublicCount(e) { return publicCounts[eventKey(e)] || 0; }
+
+
 let activeFilter='alle', searchTerm='', viewMode='list', quickFilter='alle', sortMode='date', leafletMap=null;
 let wishlist = new Set(JSON.parse(localStorage.getItem('viana_wl')||'[]'));
 let goingList = new Set(JSON.parse(localStorage.getItem('viana_going')||'[]'));
@@ -550,6 +592,7 @@ function eventRowHTML(e) {
     </div>
     <div class="event-right">
       <span class="cat-badge" style="background:${col}">${CAT_LABELS[e.cat]}</span>
+      ${getPublicCount(e)>0?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25)">✅ ${getPublicCount(e)} dabei</span>`:''}
       <div style="display:flex;gap:4px;margin-top:2px">
         <button class="going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich gehe hin">${goingList.has(e.name+e.start)?'✅ Dabei':'📅 Dabei?'}</button>
         <button class="heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
@@ -672,10 +715,12 @@ function toggleWishlist(idx) {
 }
 
 function toggleGoing(idx) {
-  const e=events[idx], key=e.name+e.start;
-  if(goingList.has(key)){goingList.delete(key);showToast(`Entfernt aus "Ich gehe hin"`);}
-  else{goingList.add(key);showToast(`✅ Ich gehe hin: ${e.name}!`);}
-  saveGoingList();render();updateWishlistUI();
+  const e=events[idx], key=e.name+e.start, wasGoing=goingList.has(key);
+  if(wasGoing){ goingList.delete(key); showToast('Entfernt aus "Ich gehe hin"'); }
+  else{ goingList.add(key); showToast(`✅ Ich gehe hin: ${e.name}!`); }
+  saveGoingList();
+  savePublicCount(e, wasGoing?-1:1).then(()=>render());
+  render(); updateWishlistUI();
 }
 
 function updateWishlistUI() {
@@ -747,8 +792,8 @@ function openModal(idx) {
       <div class="mas-label">✅ Ich bin dabei</div>
       <div class="mas-going-row">
         <div class="mas-going-counter">
-          <span class="mas-going-num" id="modal-going-count">0</span>
-          <span class="mas-going-sub">dabei (lokal)</span>
+          <span class="mas-going-num" id="modal-going-count">${getPublicCount(e)}</span>
+          <span class="mas-going-sub">${getPublicCount(e)===1?'Person ist':'Personen sind'} dabei</span>
         </div>
         <button class="mas-btn ${isGoing?'mas-going-active':'mas-going-idle'}" id="modal-going-btn" onclick="toggleGoingModal(${idx})">${isGoing?'✅ Dabei! (entfernen)':'📅 Ich gehe hin!'}</button>
       </div>
@@ -783,10 +828,14 @@ function toggleWishlistModal(idx) {
 }
 
 function toggleGoingModal(idx) {
-  const e=events[idx], key=e.name+e.start, btn=document.getElementById('modal-going-btn');
-  if(goingList.has(key)){goingList.delete(key);if(btn){btn.textContent='📅 Ich gehe hin!';btn.className='mas-btn mas-going-idle';}showToast('Entfernt aus "Ich gehe hin"');}
-  else{goingList.add(key);if(btn){btn.textContent='✅ Dabei! (entfernen)';btn.className='mas-btn mas-going-active';}showToast(`✅ ${e.name} – du bist dabei!`);}
-  saveGoingList();render();updateWishlistUI();
+  const e=events[idx], key=e.name+e.start, btn=document.getElementById('modal-going-btn'), wasGoing=goingList.has(key);
+  if(wasGoing){ goingList.delete(key); if(btn){btn.textContent='📅 Ich gehe hin!';btn.className='mas-btn mas-going-idle';} showToast('Entfernt aus "Ich gehe hin"'); }
+  else{ goingList.add(key); if(btn){btn.textContent='✅ Dabei! (entfernen)';btn.className='mas-btn mas-going-active';} showToast(`✅ ${e.name} – du bist dabei!`); }
+  saveGoingList();
+  savePublicCount(e, wasGoing?-1:1).then(n=>{
+    const el=document.getElementById('modal-going-count'); if(el) el.textContent=n;
+  });
+  render(); updateWishlistUI();
 }
 
 function copyDeepLink(url) {
@@ -889,7 +938,7 @@ backBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}))
 buildMonthTimeline();
 updateCountdown();
 updateWishlistUI();
-render();
+loadPublicCounts().then(()=>render());
 checkDeepLink();
 </script>
 </body>
