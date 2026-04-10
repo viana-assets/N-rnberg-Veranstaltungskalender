@@ -435,6 +435,8 @@ const familyEvents = [
   {cat:'family', name:'Regensburger Herbstdult', loc:'Regensburg – Dultplatz', start:'2026-08-28', end:'2026-09-13', free:true, desc:'Traditionsreiche Dult in Regensburg – eines der ältesten Volksfeste Bayerns mit Fahrgeschäften, Biergarten und Händlermarkt.', genre:'Volksfest / Tradition', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei', oepnv:'Bahn nach Regensburg Hbf', parking:'Vorhanden'},
   {cat:'family', name:'Frankenkids Familienfest', loc:'Nürnberg – Stadtgebiet (wechselnder Ort)', start:'2026-05-09', end:'2026-05-10', free:false, desc:'Das jährliche Familienfest von Frankenkids mit Mitmachaktionen, Kinderprogramm, Workshops und Spaß für die ganze Familie in der Metropolregion.', genre:'Familie / Kinder', ticket:'https://www.frankenkids.de', outdoor:true, ageMin:0, price:'Familienticket ca. 20€', oepnv:'Nürnberg ÖPNV je nach Ort', parking:'Je nach Ort'},
   {cat:'family', name:'Fürth feiert Vielfalt', loc:'Fürth – Stadtgebiet', start:'2026-04-24', end:'2026-05-10', free:true, desc:'Festival für alle in Fürth mit Vereinen und Einrichtungen. Buntes Stadtfest, Konzerte, Ausstellungen und Familienaktionen.', genre:'Stadtfest / Familie', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'U-Bahn nach Fürth Hauptbahnhof', parking:'Innenstadt Parkplätze'},
+
+  {cat:'family', name:'Schwabacher Kinderkirchweih', loc:'Schwabach – Königsplatz', start:'2026-04-24', end:'2026-04-28', free:false, desc:'Fahrgeschäfte, Karussells und Programm für Kinder und Familien am Königsplatz. Freier Eintritt, Fahrpreise kostenpflichtig.', genre:'Kinderkirchweih / Familie', ticket:'', outdoor:true, ageMin:0, price:'Freier Eintritt, Fahrpreise kostenpflichtig', oepnv:'S-Bahn S1 bis Schwabach', parking:'Parkhäuser Innenstadt'},
 ];
 
 
@@ -550,7 +552,6 @@ const events = [
   {cat:'afterwork', name:'Sundowner im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-09-17', end:'2026-09-17', free:false, desc:'17–23 Uhr. Saison-Finale der Sundowner-Reihe.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
 
   // ─── SONSTIGE ────────────────────────────────────────────────────────────
-  {cat:'sonstige', name:'Schwabacher Kinderkirchweih', loc:'Schwabach – Königsplatz', start:'2026-04-24', end:'2026-04-28', free:false, desc:'Fahrgeschäfte und Programm für Kinder und Familien.', genre:'Volksfest', outdoor:true, ageMin:0, price:'Freier Eintritt, Fahrpreise kostenpflichtig', oepnv:'S-Bahn S1 bis Schwabach', parking:'Parkhäuser Innenstadt'},
   {cat:'sonstige', name:'Kirchweih Eckersmühlen', loc:'Roth-Eckersmühlen', start:'2026-05-14', end:'2026-05-18', free:true, desc:'', genre:'Kärwa', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'S-Bahn S1 bis Roth, dann Bus', parking:'Vorhanden'},
   {cat:'sonstige', name:'Weiherhofer Kärwa', loc:'Nürnberg-Weiherhof', start:'2026-09-04', end:'2026-09-07', free:true, desc:'', genre:'Kärwa', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'Bus ab Nürnberg West', parking:'Straße'},
   // ─── 150KM UMKREIS – FESTIVALS & VOLKSFESTE ──────────────────────────────
@@ -569,12 +570,10 @@ const events = [
   {cat:'festival', name:'Nürnberg Pop Festival', loc:'Nürnberg – verschiedene Locations', start:'2026-10-08', end:'2026-10-10', free:false, desc:'Indie, Rock & Pop Showcase-Festival. 2026 mit Cari Cari und Orbit als Top-Acts. Award-prämiertes Festival für Booking-Qualität.', genre:'Indie / Pop / Rock', ticket:'https://www.nuernbergpop.de', outdoor:false, ageMin:16, price:'ab 25 €', oepnv:'U-Bahn Nürnberg Innenstadt', parking:'Innenstadtparkhäuser'},
 
   // ─── WHITE RABBIT NÜRNBERG (monatliche Events) ───────────────────────────
-  {cat:'afterwork', name:'White Rabbit Arts Night', loc:'Nürnberg – Fischbacher Hauptstr. 228', start:'2026-05-09', end:'2026-05-09', free:false, desc:'Monatliche Kunst- und Partyveranstaltung des White Rabbit Arts Space Nürnberg. Gemischtes Programm aus Live-Kunst, Musik und Performances. Termine auf Instagram: @white.rabbit.nbg', genre:'Kunst / Party / Kultur', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'ca. 8–12 €', oepnv:'Bus bis Fischbach', parking:'Straße'},
-  {cat:'afterwork', name:'White Rabbit Arts Night', loc:'Nürnberg – Fischbacher Hauptstr. 228', start:'2026-06-13', end:'2026-06-13', free:false, desc:'Monatliche Kunst- und Partyveranstaltung des White Rabbit Arts Space. Aktuelle Termine immer auf Instagram: @white.rabbit.nbg', genre:'Kunst / Party / Kultur', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'ca. 8–12 €', oepnv:'Bus bis Fischbach', parking:'Straße'},
-  {cat:'afterwork', name:'White Rabbit Arts Night', loc:'Nürnberg – Fischbacher Hauptstr. 228', start:'2026-07-11', end:'2026-07-11', free:false, desc:'Monatliche Kunst- und Partyveranstaltung des White Rabbit Arts Space. Aktuelle Termine immer auf Instagram: @white.rabbit.nbg', genre:'Kunst / Party / Kultur', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'ca. 8–12 €', oepnv:'Bus bis Fischbach', parking:'Straße'},
-  {cat:'afterwork', name:'White Rabbit Arts Night', loc:'Nürnberg – Fischbacher Hauptstr. 228', start:'2026-08-08', end:'2026-08-08', free:false, desc:'Monatliche Kunst- und Partyveranstaltung des White Rabbit Arts Space. Aktuelle Termine immer auf Instagram: @white.rabbit.nbg', genre:'Kunst / Party / Kultur', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'ca. 8–12 €', oepnv:'Bus bis Fischbach', parking:'Straße'},
-  {cat:'afterwork', name:'White Rabbit Arts Night', loc:'Nürnberg – Fischbacher Hauptstr. 228', start:'2026-09-12', end:'2026-09-12', free:false, desc:'Monatliche Kunst- und Partyveranstaltung des White Rabbit Arts Space. Aktuelle Termine immer auf Instagram: @white.rabbit.nbg', genre:'Kunst / Party / Kultur', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'ca. 8–12 €', oepnv:'Bus bis Fischbach', parking:'Straße'},
 
+  // ─── WHITE RABBIT NBG (@white.rabbit.nbg) ───────────────────────────────
+  {cat:'russian', name:'White Rabbit – БОЛЬШАЯ ВЕЧЕРИНКА 90X 00X', loc:'Nürnberg – Club SOCIETY', start:'2026-04-10', end:'2026-04-10', free:false, desc:'Große Party mit 90er & 2000er Hits im Club SOCIETY Nürnberg. Veranstaltet von White Rabbit NBG (@white.rabbit.nbg). Russisch-internationale Party-Atmosphäre.', genre:'90er / 2000er / Party', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'Infos via Instagram', oepnv:'U-Bahn nach Lorenzkirche oder Weißer Turm', parking:'Innenstadt Parkhäuser'},
+  {cat:'russian', name:'White Rabbit – БОЛЬШАЯ ВЕЧЕРИНКА 90X 00X', loc:'Nürnberg – Club SOCIETY', start:'2026-05-01', end:'2026-05-01', free:false, desc:'Große Party mit 90er & 2000er Hits im Club SOCIETY Nürnberg. Veranstaltet von White Rabbit NBG (@white.rabbit.nbg). Russisch-internationale Party-Atmosphäre.', genre:'90er / 2000er / Party', ticket:'https://www.instagram.com/white.rabbit.nbg', outdoor:false, ageMin:18, price:'Infos via Instagram', oepnv:'U-Bahn nach Lorenzkirche oder Weißer Turm', parking:'Innenstadt Parkhäuser'},
   // ─── TRUSSMEE @ MAXIM FÜRTH (monatliche Events) ──────────────────────────
   {cat:'russian', name:'Trussmee Party', loc:'Fürth – Maxim Club', start:'2026-05-02', end:'2026-05-02', free:false, desc:'Monatliche Trussmee-Party im Maxim Fürth – Elektronische Musik, wechselnde DJs und Acts. Aktuelle Termine auf Instagram und Facebook: Maxim Fürth.', genre:'Electronic / House / Techno', ticket:'https://www.facebook.com/maximfuerth', outdoor:false, ageMin:18, price:'ca. 8–15 €', oepnv:'S-Bahn bis Fürth Hbf, dann Bus', parking:'Straße Fürth'},
   {cat:'russian', name:'Trussmee Party', loc:'Fürth – Maxim Club', start:'2026-06-06', end:'2026-06-06', free:false, desc:'Monatliche Trussmee-Party im Maxim Fürth. Aktuelle Termine auf Instagram und Facebook: Maxim Fürth.', genre:'Electronic / House / Techno', ticket:'https://www.facebook.com/maximfuerth', outdoor:false, ageMin:18, price:'ca. 8–15 €', oepnv:'S-Bahn bis Fürth Hbf, dann Bus', parking:'Straße Fürth'},
@@ -640,7 +639,7 @@ async function savePublicCount(e, delta) {
 function getPublicCount(e) { return publicCounts[eventKey(e)] || 0; }
 
 
-let activeFilters=new Set(['alle']), searchTerm='', viewMode='list', quickFilter='alle', sortMode='date', leafletMap=null;
+let activeFilters=new Set(['alle']), searchTerm='', viewMode='list', quickFilter='alle', sortMode='date', leafletMap=null, showPast=false;
 let appMode = 'party'; // 'party' or 'family'
 
 function getActiveEvents() { return appMode === 'family' ? familyEvents : events; }
@@ -664,7 +663,8 @@ function isToday(ds){ const today=new Date();today.setHours(0,0,0,0);const d=new
 function getFiltered() {
   const sourceEvents = appMode === 'family' ? familyEvents : events;
   const q=searchTerm.toLowerCase(), today=new Date();today.setHours(0,0,0,0);
-  let filtered=sourceEvents.filter(e=>{
+  const allFiltered_pre = sourceEvents.filter(e => showPast || new Date(e.end) >= today);
+  let filtered=allFiltered_pre.filter(e=>{
     const matchCat=activeFilters.has('alle')?true:appMode==='family'?true:(activeFilters.has('free')&&e.free)||(activeFilters.has(e.cat));
     const matchSearch=!q||e.name.toLowerCase().includes(q)||e.loc.toLowerCase().includes(q)||(e.genre||'').toLowerCase().includes(q)||(e.desc||'').toLowerCase().includes(q);
     let matchQuick=true;
@@ -755,6 +755,13 @@ function eventCardHTML(e) {
   </div>`;
 }
 
+
+function togglePast() {
+  showPast = !showPast;
+  render();
+}
+window.togglePast = togglePast;
+
 function render() {
   const filtered=getFiltered();
   const sourceEvents = appMode === 'family' ? familyEvents : events;
@@ -767,11 +774,18 @@ function render() {
   }
   document.getElementById('cal').style.display='';
   document.getElementById('map-wrap').style.display='none';
+  const _src = appMode === 'family' ? familyEvents : events;
+  const _today = new Date(); _today.setHours(0,0,0,0);
+  const pastCount = _src.filter(e => new Date(e.end) < _today).length;
   const byMonth={};
   filtered.forEach(e=>{const m=parseInt(e.start.split('-')[1])-1;if(!byMonth[m])byMonth[m]=[];byMonth[m].push(e);});
   const cal=document.getElementById('cal');
-  if(!filtered.length){cal.innerHTML='<div class="empty"><h3>Keine Events gefunden</h3><p>Versuch einen anderen Suchbegriff oder Filter.</p></div>';return;}
-  cal.innerHTML=Object.keys(byMonth).sort((a,b)=>+a-+b).map(m=>{
+  if(!filtered.length){
+    cal.innerHTML='<div class="empty"><h3>Keine Events gefunden</h3><p>Versuch einen anderen Suchbegriff oder Filter.</p>'+(pastCount>0&&!showPast?`<br><button onclick="togglePast()" style="margin-top:1rem;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--muted);cursor:pointer;font-family:DM Sans,sans-serif;font-size:13px">🕐 ${pastCount} vergangene Events anzeigen</button>`:'')+'</div>';
+    return;
+  }
+  const pastBanner = (!showPast && pastCount>0) ? `<div style="text-align:center;padding:.75rem;margin-bottom:1rem"><button onclick="togglePast()" style="padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--muted);cursor:pointer;font-family:DM Sans,sans-serif;font-size:12px;transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">🕐 ${pastCount} vergangene Events einblenden</button></div>` : (showPast ? `<div style="text-align:center;padding:.75rem;margin-bottom:1rem"><button onclick="togglePast()" style="padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--muted);cursor:pointer;font-family:DM Sans,sans-serif;font-size:12px" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">✕ Vergangene Events ausblenden</button></div>` : '');
+  cal.innerHTML=pastBanner+Object.keys(byMonth).sort((a,b)=>+a-+b).map(m=>{
     const evs=byMonth[m];
     const rows=viewMode==='list'?`<div class="events-list">${evs.map(eventRowHTML).join('')}</div>`:`<div class="events-grid">${evs.map(eventCardHTML).join('')}</div>`;
     return `<div class="month-block" id="month-${m}"><div class="month-header"><span class="month-name">${MONTHS[m]}</span><span class="month-count">${evs.length} Event${evs.length!==1?'s':''}</span></div>${rows}</div>`;
