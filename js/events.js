@@ -3,7 +3,86 @@ const CAT_LABELS = {festival:'Festival',kaerwa:'Kärwa / Kirchweih',bierfest:'Bi
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
 const MONTHS_S = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-const COORDS = {'Nürnberg':[49.452,11.077],'Erlangen':[49.598,11.004],'Fürth':[49.478,10.989],'Schwabach':[49.328,11.021],'Herzogenaurach':[49.567,10.882],'Pleinfeld':[49.102,10.958],'Roth':[49.245,11.091],'Zirndorf':[49.444,10.955],'Oberasbach':[49.430,10.965],'Cadolzburg':[49.502,10.860],'Stein':[49.418,10.973],'Würzburg':[49.787,9.936],'Augsburg':[48.370,10.897],'Bamberg':[49.900,10.902],'Regensburg':[49.013,12.101],'Bayreuth':[49.945,11.578],'Ansbach':[49.298,10.572],'Dinkelsbühl':[49.071,10.318],'Rothenburg':[49.378,10.186],'Geiselwind':[49.770,10.510],'Lichtenfels':[50.143,11.061],'Hirschaid':[49.929,10.993],'Ellingen':[49.068,10.971],'Eschenfelden':[49.493,11.771],'Kronach':[50.236,11.330],'Lauda-Königshofen':[49.569,9.706],'Andorf':[49.362,10.537]};
+const COORDS = {
+  // ── Kernstädte ──
+  'Nürnberg':[49.452,11.077],'Erlangen':[49.598,11.004],'Fürth':[49.478,10.989],
+  'Schwabach':[49.328,11.021],'Zirndorf':[49.444,10.955],'Oberasbach':[49.430,10.965],
+  'Stein':[49.418,10.973],'Herzogenaurach':[49.567,10.882],'Cadolzburg':[49.502,10.860],
+  'Roth':[49.245,11.091],'Pleinfeld':[49.102,10.958],'Feucht':[49.378,11.213],
+  'Lauf':[49.512,11.278],'Schwaig':[49.484,11.213],
+  // ── Nürnberg Stadtteile ──
+  'Nürnberg-Gostenhof':[49.458,11.059],'Nürnberg-Schweinau':[49.440,11.055],
+  'Nürnberg-Mögeldorf':[49.452,11.121],'Nürnberg-Laufamholz':[49.454,11.173],
+  'Nürnberg-Zerzabelshof':[49.448,11.130],'Nürnberg-Eibach':[49.418,11.058],
+  'Nürnberg-St. Johannis':[49.467,11.059],'Nürnberg-Kleinreuth':[49.439,11.048],
+  'Nürnberg-Großreuth':[49.441,11.063],'Nürnberg-Lohe':[49.437,11.073],
+  'Nürnberg-Gebersdorf':[49.434,11.020],'Nürnberg-Schniegling':[49.469,11.030],
+  'Nürnberg-Wetzendorf':[49.471,11.019],'Nürnberg-Almoshof':[49.483,11.017],
+  'Nürnberg-Altenfurt':[49.400,11.148],'Nürnberg-Buch':[49.413,11.162],
+  'Nürnberg-Gartenstadt':[49.448,11.140],'Nürnberg-Ziegelstein':[49.471,11.138],
+  'Nürnberg-Kornburg':[49.380,11.095],'Nürnberg-Worzeldorf':[49.378,11.068],
+  'Nürnberg-Reichelsdorf':[49.394,11.034],'Nürnberg-Katzwang':[49.368,11.035],
+  'Nürnberg-Langwasser':[49.418,11.121],'Nürnberg-Buchenbühl':[49.433,11.147],
+  'Nürnberg-Boxdorf':[49.478,11.054],'Nürnberg-Großgründlach':[49.490,11.033],
+  'Nürnberg-Schnepfenreuth':[49.432,11.001],'Nürnberg-Mühlhof':[49.445,11.157],
+  'Nürnberg-Fischbach':[49.416,11.192],'Nürnberg-Brunn':[49.391,11.181],
+  'Nürnberg-Höfles':[49.496,11.158],'Nürnberg-Klaragasse':[49.458,11.073],
+  'Nürnberg-Neunhof':[49.505,11.085],'Nürnberg-Weiherhof':[49.461,11.038],
+  'Nürnberg-Schoppershof':[49.465,11.105],'Nürnberg-Wöhrd':[49.455,11.087],
+  'Nürnberg-Kraftshof':[49.494,11.074],'Nürnberg-Lohe':[49.437,11.073],
+  'Nürnberg-Reichelsdorf':[49.394,11.034],'Nürnberg-Ziegelstein':[49.471,11.138],
+  // ── Fürth Stadtteile ──
+  'Fürth-Sack':[49.463,10.994],'Fürth-Vach':[49.523,10.965],
+  'Fürth-Stadeln':[49.509,10.958],'Fürth-Burgfarrnbach':[49.496,10.920],
+  'Fürth-Hardhöhe':[49.453,10.973],'Fürth-Eigenes Heim':[49.476,11.000],
+  'Fürth-Poppenreuth':[49.495,11.004],'Fürth-Ronhof':[49.467,10.985],
+  'Fürth-Fürberg':[49.509,10.978],'Fürth-Unterfarrnbach':[49.484,10.937],
+  'Fürth-Atzenhof':[49.447,10.942],
+  // ── Oberasbach Ortsteile ──
+  'Oberasbach-Altenberg':[49.418,10.952],'Oberasbach-Rehdorf':[49.410,10.982],
+  'Oberasbach-Unterasbach':[49.427,10.956],
+  // ── Schwabach Ortsteile ──
+  'Schwabach-Dietersdorf':[49.311,11.022],'Schwabach-Limbach':[49.342,11.049],
+  'Schwabach-Unterreichenbach':[49.314,11.060],'Schwabach-Wolkersdorf':[49.315,11.050],
+  // ── Roth Ortsteile ──
+  'Roth-Eckersmühlen':[49.263,11.044],'Roth-Leerstetten':[49.310,11.059],
+  'Roth-Mosbach':[49.231,11.078],'Roth-Pfaffenhofen':[49.287,11.111],
+  'Roth-Ruppmannsburg':[49.275,11.096],
+  // ── Cadolzburg / Wachendorf ──
+  'Cadolzburg-Wachendorf':[49.495,10.847],
+  // ── Region ──
+  'Würzburg':[49.787,9.936],'Augsburg':[48.370,10.897],'Bamberg':[49.900,10.902],
+  'Regensburg':[49.013,12.101],'Bayreuth':[49.945,11.578],'Ansbach':[49.298,10.572],
+  'Dinkelsbühl':[49.071,10.318],'Rothenburg':[49.378,10.186],'Rothenburg ob der Tauber':[49.378,10.186],
+  'Geiselwind':[49.770,10.510],'Lichtenfels':[50.143,11.061],'Hirschaid':[49.929,10.993],
+  'Ellingen':[49.068,10.971],'Eschenfelden':[49.493,11.771],'Kronach':[50.236,11.330],
+  'Lauda-Königshofen':[49.569,9.706],'Andorf':[49.362,10.537],
+  'Röttenbach':[49.607,10.941],'Langensendelbach':[49.627,11.039],
+  'Langensendelbach bei Erlangen':[49.627,11.039],
+  'Andorf bei Ansbach':[49.362,10.537],
+  'Obernzenner See':[49.319,10.499],'Pilsach':[49.314,11.427],
+  'Meier Hilzhof, Pilsach':[49.314,11.427],
+  'Brombachsee':[49.112,10.847],'Brombachsee, Pleinfeld':[49.112,10.847],
+  'Poppenhofer Weiher, Herzogenaurach':[49.556,10.879],
+  // ── Nürnberg Locations (ohne Stadtteil) ──
+  'Airport Nürnberg':[49.497,11.078],'Hafen Nürnberg-Süd':[49.408,11.059],
+  'Nürnberger Altstadt':[49.455,11.078],'Katharinenruine, Nürnberg':[49.454,11.078],
+  'Marienbergpark, Nürnberg':[49.461,11.017],'Stadionpark Nürnberg':[49.427,11.122],
+  'Zeppelinfeld, Nürnberg':[49.423,11.122],'Pegnitzwiesen, Theodor-Heuss-Brücke':[49.453,11.063],
+  'Bootshaus Nürnberg, Dutzendteich':[49.422,11.118],
+  'Design Offices, Königstorgraben 11, 5. OG':[49.447,11.078],
+  // ── München ──
+  'München':[48.135,11.582],
+  // ── Weiter entfernt (Russian Events etc.) ──
+  'Straubing':[48.884,12.575],'Büren':[51.551,8.561],
+  'Gießen':[50.584,8.678],'Kassel':[51.312,9.481],
+  'Osnabrück':[52.279,8.047],'Kiel':[54.323,10.123],
+  'Leipzig':[51.340,12.373],'Cleebronn':[49.066,9.108],
+  'Kaisersbach':[48.868,9.663],'Rammingen':[47.979,10.591],
+  'Rust':[48.262,7.733],'Plohn':[50.540,12.342],
+  'Lohr':[49.989,9.578],'Cham':[49.220,12.659],
+  'Reisbach':[48.611,12.645],'Günzburg':[48.454,10.278],
+};
 
 const familyEvents = [
   {cat:'family', name:'Playmobil FunPark Saison', loc:'Zirndorf – Playmobil Funpark', start:'2026-04-01', end:'2026-10-31', free:false, desc:'Der riesige Playmobil Spielpark für Kinder! Piratenschiff, Ritterburg, Wasserpark, Bauernhof in Lebensgröße. Perfekter Familienausflug direkt bei Nürnberg.', genre:'Freizeitpark / Kinder', ticket:'https://www.playmobil-funpark.de', outdoor:true, ageMin:0, price:'Kinder ab 3J: 14,90€, Erw: 5,50€', oepnv:'S-Bahn S1 nach Zirndorf', parking:'Vorhanden kostenlos'},
@@ -12,11 +91,9 @@ const familyEvents = [
   {cat:'family', name:'Tiergarten – Langer Zooabend', loc:'Nürnberg – Tiergarten', start:'2026-08-08', end:'2026-08-08', free:false, desc:'Verlängerter Öffnungsbetrieb mit Musik, Liveacts und besonderen Führungen am Abend. Sommerstimmung im Tiergarten für die ganze Familie.', genre:'Zoo / Familienevent', ticket:'https://tiergarten.nuernberg.de', outdoor:true, ageMin:0, price:'Normaler Eintrittspreis', oepnv:'U2 bis Tiergarten', parking:'Vorhanden'},
   {cat:'family', name:'Kinderkirchweih Schwabach', loc:'Schwabach – Innenstadt', start:'2026-07-10', end:'2026-07-12', free:true, desc:'Die Kinderkirchweih in Schwabach ist ein Kinderfest mit Fahrgeschäften, Spielen und Programm speziell für die Kleinen. Eintritt frei.', genre:'Kirchweih / Kinder', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'S-Bahn nach Schwabach', parking:'Innenstadt Parkhäuser'},
   {cat:'family', name:'Klassik Open Air – Familienkonzert', loc:'Nürnberg – Luitpoldhain', start:'2026-07-03', end:'2026-07-05', free:false, desc:'Das Klassik Open Air zählt zu den größten Freiluftkonzerten Europas. Familienfreundlich, mit großer Leinwand und Picknick-Atmosphäre. Staatsphilharmonie und Gäste.', genre:'Klassik / Open Air', ticket:'https://www.staatstheater-nuernberg.de', outdoor:true, ageMin:0, price:'Kostenlos (Picknickwiese) oder Tribüne ab 15€', oepnv:'U1 nach Messe', parking:'Messegelände'},
-  {cat:'family', name:'Fürther Frühlingsfest', loc:'Fürth – Fürther Freiheit', start:'2026-04-14', end:'2026-04-22', free:true, desc:'Kleines Volksfest mit Fahrgeschäften, Verkaufsständen und Essen & Trinken auf der Fürther Freiheit. Ideal für Familien.', genre:'Volksfest / Familie', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos (Fahrgeschäfte kostenpflichtig)', oepnv:'U-Bahn Linie 1 nach Fürther Freiheit', parking:'Innenstadt Parkplätze'},
-  {cat:'family', name:'Nürnberger Frühlingsfest', loc:'Nürnberg – Volksfestplatz', start:'2026-04-17', end:'2026-05-03', free:true, desc:'Das Nürnberger Frühlingsfest mit Fahrgeschäften, Bierzelten und Familienangeboten. Auftakt der Volksfest-Saison in Nürnberg.', genre:'Volksfest', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei, Fahrgeschäfte kostenpflichtig', oepnv:'Tram/Bus zum Volksfestplatz', parking:'Vorhanden'},
+  {cat:'family', name:'Nürnberger Frühlingsfest', loc:'Nürnberg – Volksfestplatz (Dutzendteich)', start:'2026-04-04', end:'2026-04-26', free:true, desc:'Das Nürnberger Frühlingsfest mit Fahrgeschäften, Bierzelten und Familienangeboten. Auftakt der Volksfest-Saison in Nürnberg.', genre:'Volksfest', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei, Fahrgeschäfte kostenpflichtig', oepnv:'Tram/Bus zum Volksfestplatz', parking:'Vorhanden'},
   {cat:'family', name:'Nürnberger Herbstvolksfest', loc:'Nürnberg – Volksfestplatz', start:'2026-08-28', end:'2026-09-13', free:true, desc:'Das große Herbstvolksfest in Nürnberg mit Riesenrad, Fahrgeschäften, Bierzelten und Familienangeboten. Einer der Sommer-Abschluss-Highlights.', genre:'Volksfest', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei, Fahrgeschäfte kostenpflichtig', oepnv:'Tram/Bus zum Volksfestplatz', parking:'Vorhanden'},
-  {cat:'family', name:'Augsburger Plärrer (Frühling)', loc:'Augsburg – Plärrergelände', start:'2026-04-04', end:'2026-04-26', free:true, desc:'Das größte Volksfest Schwabens! Der Augsburger Plärrer bietet Fahrgeschäfte, Festzelte und Familienangebote für alle. Zweimal jährlich.', genre:'Volksfest / Familie', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei', oepnv:'Straßenbahn nach Plärrer-Gelände', parking:'Vorhanden'},
-  {cat:'family', name:'Bamberger Sandkerwa', loc:'Bamberg – Sandgebiet', start:'2026-08-21', end:'2026-08-30', free:true, desc:'Bambergs größtes Volksfest im Sandgebiet direkt an der Regnitz. Bier, Musik, Fahrgeschäfte und tolle Atmosphäre in einer der schönsten Städte Frankens.', genre:'Volksfest / Stadtfest', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei', oepnv:'Bahn nach Bamberg Hbf, 15min Fußweg', parking:'Begrenzt, ÖPNV empfohlen'},
+  {cat:'family', name:'Augsburger Plärrer (Frühling)', loc:'Augsburg – Plärrergelände', start:'2026-04-05', end:'2026-04-19', free:true, desc:'Das größte Volksfest Schwabens! Der Augsburger Plärrer bietet Fahrgeschäfte, Festzelte und Familienangebote für alle. Zweimal jährlich.', genre:'Volksfest / Familie', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei', oepnv:'Straßenbahn nach Plärrer-Gelände', parking:'Vorhanden'},
   {cat:'family', name:'Kindertheater-Festival Nürnberg', loc:'Nürnberg – Stadttheater / Tafelhalle', start:'2026-06-06', end:'2026-06-21', free:false, desc:'Renommiertes Kindertheater-Festival mit nationalen und internationalen Produktionen für Kinder ab 3 Jahren. Workshops, Mitmachtheater und Aufführungen.', genre:'Theater / Kinder', ticket:'https://www.staatstheater-nuernberg.de', outdoor:false, ageMin:0, price:'Tickets ab 8€', oepnv:'U1 Hauptbahnhof', parking:'Innenstadt Parkhäuser'},
   {cat:'family', name:'Stadtparkfest Nürnberg', loc:'Nürnberg – Stadtpark', start:'2026-07-19', end:'2026-07-26', free:true, desc:'Wochenlang Musik, Kultur und Familienunterhaltung im Nürnberger Stadtpark. Konzerte auf der Open-Air-Bühne, Kinderprogramm und Gastronomie.', genre:'Stadtfest / Familie', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'U2 bis Aufseßplatz oder Tram 4', parking:'Begrenzt'},
   {cat:'family', name:'Regensburger Herbstdult', loc:'Regensburg – Dultplatz', start:'2026-08-28', end:'2026-09-13', free:true, desc:'Traditionsreiche Dult in Regensburg – eines der ältesten Volksfeste Bayerns mit Fahrgeschäften, Biergarten und Händlermarkt.', genre:'Volksfest / Tradition', ticket:'', outdoor:true, ageMin:0, price:'Eintritt frei', oepnv:'Bahn nach Regensburg Hbf', parking:'Vorhanden'},
@@ -218,12 +295,17 @@ const events = [
   {cat:'strand', name:'Grafflmarkt Fürth', loc:'Fürth – Altstadt', start:'2026-09-04', end:'2026-09-05', free:true, desc:'Fürths großer Trödelmarkt in der historischen Altstadt – Schmuckstücke, Graffl und nette Atmosphäre. Fr 16–22 Uhr, Sa 8–16 Uhr. Eintritt frei!', genre:'Markt / Flohmarkt / Stadtfest', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'U1 Fürth Hbf', parking:'Innenstadt Fürth'},
   {cat:'strand', name:'Wöhrder See Sommerfest', loc:'Nürnberg – Wöhrder See', start:'2026-07-24', end:'2026-07-26', free:true, desc:'Sommerfest am Wöhrder See mit Live-Musik, Cocktails und Strandflair direkt am Wasser. Einer der schönsten Sommertreffpunkte in Nürnberg.', genre:'Sommerfest / See / Open Air', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos', oepnv:'U2/U3 bis Wöhrder Wiese', parking:'Wöhrder See Parkplatz'},
 
+  {cat:'afterwork', name:'Afterwork Party – Summer Vibes mit DJ MAD', loc:'Nürnberg – GATE Club (Flughafen Terminal 2)', start:'2026-05-07', end:'2026-05-07', free:true, desc:'Summer Vibes Afterwork Party mit DJ MAD im GATE Club am Flughafen Nürnberg. Melodic, Afro & Tech House, House Classics. 19–01 Uhr. Eintritt frei!', genre:'House / Afro House / Tech House', ticket:'', outdoor:false, ageMin:18, price:'Kostenlos', oepnv:'S-Bahn S2 bis Flughafen, Terminal 2', parking:'Flughafen Parkhaus'},
+  {cat:'afterwork', name:'Tanz in den Mai – GATE Club', loc:'Nürnberg – GATE Club (Flughafen Terminal 2)', start:'2026-04-30', end:'2026-04-30', free:false, desc:'Tanz in den Mai im GATE Club! Gate 1: Disco Classics, 80er/90er/2000er mit Frank Sonique. Gate 2: House Music mit DJ MAD. Terrassenopening + Prosecco Empfang + Flower Deko. Terrasse die ganze Nacht geöffnet. Einlass 21 Uhr.', genre:'Disco / House / 80er 90er', ticket:'https://feierliste.ticket.io', outdoor:false, ageMin:18, price:'VVK 12,50€ + Geb.', oepnv:'S-Bahn S2 bis Flughafen, Terminal 2', parking:'Flughafen Parkhaus'},
+
+  {cat:'afterwork', name:'Afterwork Party – Spring Vibes feat. DJane Nadiia', loc:'Nürnberg – GATE Club (Flughafen Terminal 2)', start:'2026-04-23', end:'2026-04-23', free:true, desc:'Spring Vibes Afterwork Party mit DJane Nadiia im GATE Club. Melodic, Tech & Afro House. Do. 23. April, 20–01 Uhr. Eintritt frei!', genre:'Melodic House / Tech House / Afro House', ticket:'', outdoor:false, ageMin:18, price:'Kostenlos', oepnv:'S-Bahn S2 bis Flughafen, Terminal 2', parking:'Flughafen Parkhaus'},
+
 ];
 
 
 function getCoords(loc) {
   for (const [city,c] of Object.entries(COORDS)) { if (loc.includes(city)) return c; }
-  return [49.452+(Math.random()-.5)*.04, 11.077+(Math.random()-.5)*.04];
+  return null;
 }
 
 // ── FIREBASE ──────────────────────────────────────────────────────────────────
@@ -312,7 +394,7 @@ function getFiltered() {
   if(maxDist > 0 && userLat !== null) {
     filtered = filtered.filter(e => {
       const d = getEventDist(e);
-      return d === null || d <= maxDist;
+      return d !== null && d <= maxDist;
     });
   }
   if(quickFilter==='next'){const d0=filtered.length?filtered[0].start:null;if(d0)filtered=filtered.filter(e=>e.start===d0);}
@@ -636,6 +718,7 @@ function haversine(lat1, lon1, lat2, lon2) {
 function getEventDist(e) {
   if(userLat===null) return null;
   const coords = getCoords(e.loc);
+  if(!coords) return null;
   return haversine(userLat, userLon, coords[0], coords[1]);
 }
 
