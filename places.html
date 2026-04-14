@@ -85,6 +85,14 @@
       </select>
     </div>
 
+    <!-- Location & PLZ filter -->
+    <div class="radius-bar" style="flex-wrap:wrap;gap:8px;">
+      <input type="text" id="places-plz-input" class="plz-input" placeholder="PLZ eingeben…" maxlength="5" inputmode="numeric" style="width:120px">
+      <button id="places-geo-btn" class="loc-geo-btn">📍 Standort ermitteln</button>
+      <span id="places-loc-status" class="loc-status"></span>
+      <button id="places-loc-clear" class="loc-clear-btn" style="display:none">✕ Standort löschen</button>
+    </div>
+
     <!-- Radius filter -->
     <div class="radius-bar">
       <label for="places-radius">📏 Max. Entfernung:</label>

@@ -11,7 +11,7 @@
   window._vianaLoadGA = function () {
     if (window._gaLoaded) return;
     window._gaLoaded = true;
-    const GA_ID = 'G-XXXXXXXXXX'; // ← deine GA4 Measurement ID hier eintragen
+    const GA_ID = 'G-WTHG0V5354';
     const s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;

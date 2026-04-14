@@ -6,7 +6,7 @@
 // ── KATEGORIEN ────────────────────────────────────────
 const PLACE_CATS = [
   { id:'baeder',       icon:'🏊',  name:'Bäder & Thermen',       color:'#5b8ff9', desc:'Hallenbäder, Freibäder, Spaßbäder, Saunalandschaften',    count:83 },
-  { id:'freizeitparks',icon:'🎢',  name:'Freizeitparks',          color:'#e8963a', desc:'Erlebnisparks, Themenparks, Familienparks',               count:21 },
+  { id:'freizeitparks',icon:'🎢',  name:'Freizeitparks',          color:'#e8963a', desc:'Erlebnisparks, Themenparks, Familienparks',               count:24 },
   { id:'ausflugsziele', icon:'🏰', name:'Ausflugsziele',          color:'#a78bfa', desc:'Sehenswürdigkeiten, Burgen, Museen, Naturziele',          count:28 },
   { id:'clubs',        icon:'🎵',  name:'Clubs & Diskotheken',    color:'#f472b6', desc:'Nightlife, Clubs, Discos, Tanzschuppen',                  count:58 },
   { id:'cocktailbars', icon:'🍹',  name:'Cocktailbars',           color:'#34d399', desc:'Bar-Highlights, Rooftops, Weinbars, Craft Cocktails',     count:20 },
@@ -165,7 +165,7 @@ const PLACES = {
     { name:'Playmobil FunPark Zirndorf', addr:'Brandstätterstr. 2-10, 90513 Zirndorf', city:'Zirndorf', lat:49.4433, lng:10.9543, tags:['Kinder','Familie','Outdoor'], preis:'Kind 14.90€, Erw 5.50€', oeffnung:'Ende Mrz - Anfang Nov, tägl. 9-19 Uhr', web:'playmobil-funpark.de', maps:'https://maps.google.com/?q=Playmobil+FunPark+Zirndorf', highlight:'12 km – direkt vor der Haustür' },
     { name:'Erlebnispark Schloss Thurn', addr:'Schloss-Thurn-Str. 100, 91336 Heroldsbach', city:'Heroldsbach', lat:49.7506, lng:11.0228, tags:['Familie','Achterbahn','VR'], preis:'ab 30.90€', oeffnung:'28.3. – 1.11.2026', web:'schloss-thurn.de', maps:'https://maps.google.com/?q=Schloss+Thurn+Heroldsbach', highlight:'28 km – VR-Achterbahn & Westernstadt' },
     { name:'Freizeit-Land Geiselwind', addr:'Scheinfelder Str. 50, 96160 Geiselwind', city:'Geiselwind', lat:49.7825, lng:10.3959, tags:['Achterbahn','Familie','100 Attraktionen'], preis:'ab ca. 20€', oeffnung:'28.3. – 2.11.2026', web:'freizeit-land.de', maps:'https://maps.google.com/?q=Freizeit-Land+Geiselwind', highlight:'50 km – 6 Achterbahnen, direkt an A3' },
-    { name:'Monsterpark Rattelsdorf', addr:'Im Stock 11, 96179 Rattelsdorf', city:'Rattelsdorf', lat:49.9447, lng:10.8812, tags:['Baumaschinen','Kinder','Technik'], preis:'ab 15€', oeffnung:'WE & Feiertage Apr-Okt', web:'monsterpark.de', maps:'https://maps.google.com/?q=Monsterpark+Rattelsdorf', highlight:'65 km – Einziger Baggerpark Deutschlands' },
+    { name:'Monsterpark Rattelsdorf', addr:'Im Stock 11, 96179 Rattelsdorf', city:'Rattelsdorf', lat:49.9447, lng:10.8812, tags:['Baumaschinen','Kinder','Technik'], preis:'ab 15€', oeffnung:'WE & Feiertage Apr-Okt', web:'', maps:'https://maps.google.com/?q=Monsterpark+Rattelsdorf', highlight:'65 km – Einziger Baggerpark Deutschlands' },
     { name:'Churpfalzpark Loifling', addr:'Loifling 40, 93413 Cham', city:'Cham', lat:49.2197, lng:12.6591, tags:['Familie','Wildpark','Achterbahn'], preis:'ab 18€', oeffnung:'Apr-Okt', web:'churpfalzpark.de', maps:'https://maps.google.com/?q=Churpfalzpark+Loifling' },
     { name:'LEGOLAND Deutschland Günzburg', addr:'Günter-Blobel-Str. 1, 89312 Günzburg', city:'Günzburg', lat:48.4543, lng:10.2779, tags:['Kinder','LEGO','Themenpark'], preis:'ab 50€, ADAC 20%', oeffnung:'28.3. – 1.11.2026', web:'legoland.de', maps:'https://maps.google.com/?q=LEGOLAND+Günzburg', highlight:'120 km – Einziger LEGO-Park DE' },
     { name:'Peppa Pig Park Günzburg', addr:'Günter-Blobel-Str. 1, 89312 Günzburg', city:'Günzburg', lat:48.4543, lng:10.2790, tags:['Kleinkinder','Familie'], preis:'kombi mit LEGOLAND', oeffnung:'Saisonbetrieb 2026', web:'legoland.de/peppa-pig', maps:'https://maps.google.com/?q=Peppa+Pig+Park+Günzburg' },
@@ -179,7 +179,10 @@ const PLACES = {
     { name:'Steinwasen-Park Oberried', addr:'Steinwasen 1, 79254 Oberried', city:'Rust', lat:47.9169, lng:7.9524, tags:['Schwarzwald','Wildpark','Familie'], preis:'ab 25€', oeffnung:'Mrz-Nov 2026', web:'steinwasen-park.de', maps:'https://maps.google.com/?q=Steinwasen+Park+Oberried' },
     { name:'Europa-Park Rust', addr:'Europa-Park-Str. 2, 77977 Rust', city:'Rust', lat:48.2618, lng:7.7326, tags:['Top-Park','Achterbahn','Themenparks'], preis:'ab 67€ Erw.', oeffnung:'ganzjährig', web:'europapark.de', maps:'https://maps.google.com/?q=Europa-Park+Rust', highlight:'350 km – Bester Park Europas, 7 Mio Besucher' },
     { name:'Phantasialand Brühl', addr:'Berggeiststr. 31-41, 50321 Brühl', city:'Brühl', lat:50.8299, lng:6.9056, tags:['Thrill','Weltklasse','Achterbahn'], preis:'ab 47€ online', oeffnung:'Apr-Dez 2026', web:'phantasialand.de', maps:'https://maps.google.com/?q=Phantasialand+Brühl', highlight:'420 km – Mehrfach Bester Park Europas' },
-    { name:'Movie Park Germany Marl', addr:'Warner Allee 1, 45772 Marl', city:'Leipzig', lat:51.5694, lng:7.1970, tags:['Film','Shows','Halloween'], preis:'ab 40€', oeffnung:'Apr-Nov 2026', web:'movieparkgermany.de', maps:'https://maps.google.com/?q=Movie+Park+Germany' },
+    { name:'Movie Park Germany Marl', addr:'Warner Allee 1, 45772 Marl', city:'Marl', lat:51.5694, lng:7.1970, tags:['Film','Shows','Halloween'], preis:'ab 40€', oeffnung:'Apr-Nov 2026', web:'movieparkgermany.de', maps:'https://maps.google.com/?q=Movie+Park+Germany', highlight:'450 km – Film- & Studio-Themenpark NRW' },
+    { name:'Heide Park Resort Soltau', addr:'Heide-Park-Str. 1, 29614 Soltau', city:'Soltau', lat:52.9994, lng:9.9178, tags:['Achterbahn','Thrill','Familie'], preis:'ab 45€', oeffnung:'Apr-Nov 2026', web:'heide-park.de', maps:'https://maps.google.com/?q=Heide+Park+Soltau', highlight:'480 km – Größter Freizeitpark Norddeutschlands' },
+    { name:'Hansa-Park Sierksdorf', addr:'Sierksdorfer Str. 10, 23730 Sierksdorf', city:'Sierksdorf', lat:54.0731, lng:10.7592, tags:['Ostsee','Achterbahn','Familie'], preis:'ab 40€', oeffnung:'Apr-Nov 2026', web:'hansapark.de', maps:'https://maps.google.com/?q=Hansa-Park+Sierksdorf', highlight:'630 km – Einziger Freizeitpark direkt an der Ostsee' },
+    { name:'Serengeti-Park Hodenhagen', addr:'Am Safaripark 1, 29693 Hodenhagen', city:'Hodenhagen', lat:52.7550, lng:9.6167, tags:['Safari','Tiere','Freizeitpark'], preis:'ab 38€', oeffnung:'Apr-Nov 2026', web:'serengeti-park.de', maps:'https://maps.google.com/?q=Serengeti+Park+Hodenhagen', highlight:'490 km – Größter Freizeitpark Deutschlands nach Fläche, Safari + Rides' },
     { name:'Erlebnispark Steinau', addr:'Steinau an der Straße', city:'Lohr', lat:50.3139, lng:9.4652, tags:['Familie','Grimm','Märchen'], preis:'ab 15€', oeffnung:'Saisonbetrieb', web:'erlebnispark-steinau.de', maps:'https://maps.google.com/?q=Erlebnispark+Steinau' },
     { name:'Tatzmania Löffingen', addr:'Im Zollhaus 1, 79843 Löffingen', city:'Rust', lat:47.8822, lng:8.3428, tags:['Wildpark','Kinder','Schwarzwald'], preis:'ab 22€', oeffnung:'Saisonbetrieb', web:'tatzmania.de', maps:'https://maps.google.com/?q=Tatzmania+Löffingen' },
     { name:'Wild- und Freizeitpark Allensbach', addr:'Litzelstetterstr. 5, 78476 Allensbach', city:'Rust', lat:47.7123, lng:9.0553, tags:['Wildpark','Bodensee','Familie'], preis:'ab 18€', oeffnung:'Apr-Nov', web:'', maps:'https://maps.google.com/?q=Wild+und+Freizeitpark+Allensbach' },
@@ -445,19 +448,58 @@ const PLACES = {
   ],
 };
 
+// ── TOAST ─────────────────────────────────────────
+function showToastPlaces(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── PLZ GEOCODING ─────────────────────────────────
+async function geocodePLZPlaces(plz) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${plz}&country=DE&format=json&limit=1`, {
+      headers: {'Accept-Language':'de', 'User-Agent':'VianaEventsKalender/1.0'}
+    });
+    const data = await res.json();
+    if (!data.length) { showToastPlaces('PLZ nicht gefunden'); return; }
+    const {lat, lon, display_name} = data[0];
+    const parts = display_name.split(',').map(p => p.trim());
+    const city = parts.find(p => !/^\d{5}$/.test(p)) || parts[0];
+    window._userLat = parseFloat(lat);
+    window._userLng = parseFloat(lon);
+    const label = `${plz} ${city}`;
+    localStorage.setItem('viana_places_loc', JSON.stringify({lat:window._userLat, lon:window._userLng, label}));
+    const statusEl = document.getElementById('places-loc-status');
+    if (statusEl) { statusEl.className = 'loc-status active'; statusEl.textContent = '📍 ' + label; }
+    const clearBtn = document.getElementById('places-loc-clear');
+    if (clearBtn) clearBtn.style.display = '';
+    if (_activeCat) renderPlacesList(_activeCat);
+  } catch(err) { showToastPlaces('Geocoding fehlgeschlagen'); }
+}
+
 // ── RENDER FUNCTIONS ──────────────────────────────
 function initPlaces() {
   const catGrid = document.getElementById('cat-grid');
-  const placesList = document.getElementById('places-list');
   if (!catGrid) return;
 
-  // Try get user location
+  // Restore saved location or try geolocation
   window._userLat = null; window._userLng = null;
-  if (navigator.geolocation) {
+  const savedLoc = localStorage.getItem('viana_places_loc');
+  if (savedLoc) {
+    try {
+      const {lat, lon, label} = JSON.parse(savedLoc);
+      window._userLat = lat; window._userLng = lon;
+      const statusEl = document.getElementById('places-loc-status');
+      if (statusEl) { statusEl.className = 'loc-status active'; statusEl.textContent = '📍 ' + label; }
+      const clearBtn = document.getElementById('places-loc-clear');
+      if (clearBtn) clearBtn.style.display = '';
+    } catch(e) {}
+  } else if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(pos => {
       window._userLat = pos.coords.latitude;
       window._userLng = pos.coords.longitude;
-      // Re-render if a category is open
       if (window._activeCat) renderPlacesList(window._activeCat);
     }, () => {
       window._userLat = P_HOME.lat;
@@ -466,6 +508,53 @@ function initPlaces() {
   } else {
     window._userLat = P_HOME.lat;
     window._userLng = P_HOME.lng;
+  }
+
+  // PLZ input
+  const plzInput = document.getElementById('places-plz-input');
+  if (plzInput) {
+    plzInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const plz = e.target.value.trim();
+        if (/^\d{5}$/.test(plz)) geocodePLZPlaces(plz);
+        else showToastPlaces('Bitte eine gültige 5-stellige PLZ eingeben');
+      }
+    });
+  }
+
+  // Standort ermitteln button
+  const geoBtn = document.getElementById('places-geo-btn');
+  if (geoBtn) {
+    geoBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) { showToastPlaces('Geolocation nicht verfügbar'); return; }
+      const statusEl = document.getElementById('places-loc-status');
+      if (statusEl) { statusEl.className = 'loc-status'; statusEl.textContent = '⏳ Ermittle Standort…'; }
+      navigator.geolocation.getCurrentPosition(pos => {
+        window._userLat = pos.coords.latitude;
+        window._userLng = pos.coords.longitude;
+        const label = 'Aktueller Standort';
+        localStorage.setItem('viana_places_loc', JSON.stringify({lat:window._userLat, lon:window._userLng, label}));
+        if (statusEl) { statusEl.className = 'loc-status active'; statusEl.textContent = '📍 ' + label; }
+        const clearBtn = document.getElementById('places-loc-clear');
+        if (clearBtn) clearBtn.style.display = '';
+        if (_activeCat) renderPlacesList(_activeCat);
+      }, () => { if(statusEl) statusEl.textContent = ''; showToastPlaces('Standort abgelehnt – bitte PLZ eingeben'); });
+    });
+  }
+
+  // Standort löschen button
+  const clearBtn = document.getElementById('places-loc-clear');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      localStorage.removeItem('viana_places_loc');
+      window._userLat = P_HOME.lat; window._userLng = P_HOME.lng;
+      const statusEl = document.getElementById('places-loc-status');
+      if (statusEl) { statusEl.className = 'loc-status'; statusEl.textContent = ''; }
+      clearBtn.style.display = 'none';
+      const plzEl = document.getElementById('places-plz-input');
+      if (plzEl) plzEl.value = '';
+      if (_activeCat) renderPlacesList(_activeCat);
+    });
   }
 
   renderCatGrid();

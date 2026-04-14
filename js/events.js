@@ -759,7 +759,8 @@ async function geocodePLZ(plz) {
     const data = await res.json();
     if(!data.length) { showToast('PLZ nicht gefunden'); return; }
     const {lat, lon, display_name} = data[0];
-    const city = display_name.split(',')[0].trim();
+    const parts = display_name.split(',').map(p => p.trim());
+    const city = parts.find(p => !/^\d{5}$/.test(p)) || parts[0];
     setUserLocation(parseFloat(lat), parseFloat(lon), `${plz} ${city}`);
   } catch(err) { showToast('Geocoding fehlgeschlagen'); }
 }
