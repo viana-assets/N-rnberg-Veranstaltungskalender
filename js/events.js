@@ -1,5 +1,5 @@
-const CAT_COLORS = {festival:'#5b8ff9',kaerwa:'#c8974e',bierfest:'#e8963a',afterwork:'#a78bfa',sonstige:'#34d399',family:'#34d399',russian:'#f472b6',strand:'#06b6d4'};
-const CAT_LABELS = {festival:'Festival',kaerwa:'Kärwa / Kirchweih',bierfest:'Bierfest',afterwork:'After Work / Club',sonstige:'Sonstiges',family:'Familie',russian:'🇷🇺 Russian Event',strand:'🏖️ Stadtstrand'};
+const CAT_COLORS = {festival:'#5b8ff9',kaerwa:'#c8974e',bierfest:'#e8963a',afterwork:'#a78bfa',sonstige:'#34d399',family:'#34d399',russian:'#f472b6',strand:'#06b6d4',messe:'#64748b'};
+const CAT_LABELS = {festival:'Festival',kaerwa:'Kärwa / Kirchweih',bierfest:'Bierfest',afterwork:'After Work / Club',sonstige:'Sonstiges',family:'Familie',russian:'🇷🇺 Russian Event',strand:'🏖️ Stadtstrand',messe:'🏛️ Messe'};
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
 const MONTHS_S = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -302,6 +302,39 @@ const events = [
 
 ];
 
+const sonsigeEvents = [
+  // ─── MESSEN ──────────────────────────────────────────────────────────────
+  // April 2026
+  {cat:'messe', name:'IFH Intherm – Sanitär, Heizung, Gebäudetechnik', loc:'Nürnberg – Messe Nürnberg', start:'2026-04-14', end:'2026-04-17', free:false, desc:'Internationale Fachmesse für Sanitär, Heizung und Gebäudetechnik. Eine der wichtigsten Branchenmessen Deutschlands.', genre:'Fachmesse / SHK-Branche', ticket:'https://www.intherm.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U1 bis Messe', parking:'Messe Nürnberg'},
+  {cat:'messe', name:'heise Jobs IT-Tag – IT & Karriere', loc:'München', start:'2026-04-15', end:'2026-04-15', free:false, desc:'IT- und Karrieremesse von heise: Direktkontakt zu Tech-Unternehmen, Vorträge und Networking für IT-Fachkräfte.', genre:'Karrieremesse / IT', ticket:'https://www.heisejobs.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'München ÖPNV', parking:'Vor Ort'},
+  {cat:'messe', name:'ARCHITECT@WORK – Architektur & Design', loc:'München', start:'2026-04-15', end:'2026-04-16', free:false, desc:'Fachmesse für Architekten und Planer mit innovativen Produkten und Materialien. Kompaktes Format mit persönlicher Beratung.', genre:'Fachmesse / Architektur', ticket:'https://www.architectatwork.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'München ÖPNV', parking:'Vor Ort'},
+  {cat:'messe', name:'AGRARSCHAU Allgäu – Landwirtschaft & Technik', loc:'Dietmannsried – Allgäu', start:'2026-04-16', end:'2026-04-20', free:false, desc:'Regionale Agrarmesse im Allgäu mit Landtechnik, Tierschau und Ausstellern aus der Landwirtschaft.', genre:'Fachmesse / Landwirtschaft', ticket:'', outdoor:true, ageMin:0, price:'Tagesticket', oepnv:'Bahn nach Dietmannsried', parking:'Messegelände'},
+  {cat:'messe', name:'Bildungsmesse Inn-Salzach – Ausbildung & Beruf', loc:'Mühldorf a. Inn', start:'2026-04-17', end:'2026-04-18', free:true, desc:'Regionale Bildungs- und Karrieremesse für Ausbildungssuchende, Schüler und Berufswechsler in der Region Inn-Salzach.', genre:'Bildungsmesse / Karriere', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'Bahn nach Mühldorf', parking:'Vor Ort'},
+  {cat:'messe', name:'Tattoo Convention Simbach', loc:'Simbach a. Inn', start:'2026-04-18', end:'2026-04-19', free:false, desc:'Tattoo-Convention mit nationalen und internationalen Künstlern. Live-Tätowierungen, Ausstellungen und Wettbewerbe.', genre:'Convention / Tattoo', ticket:'', outdoor:false, ageMin:18, price:'Tagesticket', oepnv:'Bahn nach Simbach', parking:'Vor Ort'},
+  {cat:'messe', name:'LMU KarriereGipfel – Hochschul-Karrieremesse', loc:'München – LMU', start:'2026-04-21', end:'2026-04-21', free:true, desc:'Hochschul-Karrieremesse der LMU München: Arbeitgeber treffen Studierende und Absolventen. Networking, Bewerbungsgespräche, Vorträge.', genre:'Karrieremesse / Hochschule', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'U3/U6 bis Universität', parking:'Begrenzt'},
+  {cat:'messe', name:'MMM-Messe – Versicherungen & Finanzdienstleistung', loc:'München – MOC', start:'2026-04-21', end:'2026-04-21', free:false, desc:'Fachmesse für Versicherungen und Finanzdienstleistungen im MOC München. Networking und Produktvorstellungen für Branchenprofis.', genre:'Fachmesse / Finance', ticket:'', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Scheidplatz', parking:'MOC Parkhaus'},
+  {cat:'messe', name:'vocatium Oberbayern – Ausbildung & Studium', loc:'Fürstenfeldbruck', start:'2026-04-21', end:'2026-04-22', free:true, desc:'Vertiefende Berufsorientierungsmesse mit Voranmeldung. Schüler treffen gezielt passende Aussteller für Ausbildung und Studium.', genre:'Bildungsmesse / Ausbildung', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'S4 bis Fürstenfeldbruck', parking:'Vor Ort'},
+  {cat:'messe', name:'CONTACT – Recruitingmesse TH Ingolstadt', loc:'Ingolstadt', start:'2026-04-21', end:'2026-04-22', free:true, desc:'Karrieremesse der Technischen Hochschule Ingolstadt: Direktkontakt zu Unternehmen aus Technik, Wirtschaft und Informatik.', genre:'Karrieremesse / Technik', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'Bahn nach Ingolstadt Hbf', parking:'TH Ingolstadt'},
+  {cat:'messe', name:'vocatium Mittelfranken', loc:'Erlangen', start:'2026-04-22', end:'2026-04-23', free:true, desc:'Vertiefende Berufsorientierungsmesse für Schüler in Mittelfranken. Persönliche Gesprächstermine mit regionalen Ausbildungsbetrieben.', genre:'Bildungsmesse / Ausbildung', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'Bahn nach Erlangen', parking:'Vor Ort'},
+  {cat:'messe', name:'AZUBISpot – Azubi- & Karrieremesse', loc:'Aichach', start:'2026-04-22', end:'2026-04-22', free:true, desc:'Regionale Azubi- und Karrieremesse in Aichach: Unternehmen aus der Region stellen Ausbildungsplätze und duale Studienplätze vor.', genre:'Bildungsmesse / Ausbildung', ticket:'', outdoor:false, ageMin:0, price:'Kostenlos', oepnv:'Bahn nach Aichach', parking:'Vor Ort'},
+  {cat:'messe', name:'akustika – Musik & Akustik', loc:'Nürnberg – Messe Nürnberg', start:'2026-04-24', end:'2026-04-26', free:false, desc:'Fachmesse für Musikinstrumente, HiFi, Akustik und professionelle Audiotechnik in Nürnberg.', genre:'Fachmesse / Musik & Audio', ticket:'https://www.akustika.de', outdoor:false, ageMin:0, price:'Tagesticket', oepnv:'U1 bis Messe', parking:'Messe Nürnberg'},
+  {cat:'messe', name:'E-BIKE DAYS München', loc:'München – Olympiapark', start:'2026-04-24', end:'2026-04-26', free:false, desc:'Die E-Bike-Messe im Olympiapark München: Neuheiten testen, Hersteller treffen, Teststrecken und Rahmenprogramm.', genre:'Messe / E-Mobilität', ticket:'', outdoor:true, ageMin:0, price:'Tagesticket', oepnv:'U3 bis Olympiazentrum', parking:'Olympiapark'},
+  {cat:'messe', name:'Ceramitec – Keramik-Industrie (international)', loc:'München – Messe München', start:'2026-04-24', end:'2026-04-26', free:false, desc:'Internationale Leitmesse der keramischen Industrie: Maschinen, Anlagen und Rohstoffe für die Keramik-Produktion weltweit.', genre:'Fachmesse / Industrie', ticket:'https://www.ceramitec.com', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Messestadt West', parking:'Messe München'},
+  // Mai 2026
+  {cat:'messe', name:'IFAT Munich – Umwelttechnologien (Weltleitmesse)', loc:'München – Messe München', start:'2026-05-04', end:'2026-05-08', free:false, desc:'Weltleitmesse für Wasser-, Abwasser-, Abfall- und Rohstoffwirtschaft. Über 3.000 Aussteller aus 60+ Ländern.', genre:'Weltleitmesse / Umwelttechnik', ticket:'https://www.ifat.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Messestadt West', parking:'Messe München'},
+  {cat:'messe', name:'Interzoo – Heimtierbranche (Weltleitmesse)', loc:'Nürnberg – Messe Nürnberg', start:'2026-05-12', end:'2026-05-15', free:false, desc:'Weltleitmesse der Heimtierbranche: Futter, Zubehör, Tierbedarf und Innovationen aus aller Welt. Nur für Fachbesucher.', genre:'Weltleitmesse / Heimtiere', ticket:'https://www.interzoo.com', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U1 bis Messe', parking:'Messe Nürnberg'},
+  // Juni 2026
+  {cat:'messe', name:'Stone+tec – Naturstein & Technologien', loc:'Nürnberg – Messe Nürnberg', start:'2026-06-17', end:'2026-06-20', free:false, desc:'Internationale Fachmesse für Naturstein, Steintechnik und Steindesign. Bearbeitungsmaschinen, Werkzeuge und Designinspirationen.', genre:'Fachmesse / Bau & Design', ticket:'https://www.stone-tec.com', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U1 bis Messe', parking:'Messe Nürnberg'},
+  {cat:'messe', name:'Intersolar Europe – Solar & Energie', loc:'München – Messe München', start:'2026-06-23', end:'2026-06-25', free:false, desc:'Weltweit führende Fachmesse für die Solarwirtschaft und Energiewende. Photovoltaik, Batteriespeicher, Solarwärme.', genre:'Fachmesse / Energie', ticket:'https://www.intersolar.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Messestadt West', parking:'Messe München'},
+  // September 2026
+  {cat:'messe', name:'GaLaBau – Garten-, Landschafts- & Sportplatzbau', loc:'Nürnberg – Messe Nürnberg', start:'2026-09-15', end:'2026-09-18', free:false, desc:'Internationale Fachmesse für Garten-, Landschafts- und Sportplatzbau. Maschinen, Pflanzen, Outdoor-Design.', genre:'Fachmesse / Garten & Landschaft', ticket:'https://www.galabau-messe.com', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U1 bis Messe', parking:'Messe Nürnberg'},
+  // Oktober 2026
+  {cat:'messe', name:'EXPO REAL – Internationale Immobilienmesse', loc:'München – Messe München', start:'2026-10-05', end:'2026-10-07', free:false, desc:'Europas größte Immobilienmesse: Investment, Stadtentwicklung, PropTech. 40.000+ Fachbesucher aus 70 Ländern.', genre:'Fachmesse / Immobilien', ticket:'https://www.exporeal.net', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Messestadt West', parking:'Messe München'},
+  // November 2026
+  {cat:'messe', name:'electronica – Elektronik (Weltleitmesse)', loc:'München – Messe München', start:'2026-11-10', end:'2026-11-13', free:false, desc:'Weltleitmesse der Elektronik: Halbleiter, Embedded Systems, Sensorik, KI-Hardware. Größte Elektronik-Messe der Welt.', genre:'Weltleitmesse / Elektronik', ticket:'https://www.electronica.de', outdoor:false, ageMin:0, price:'Fachbesucher', oepnv:'U2 bis Messestadt West', parking:'Messe München'},
+
+];
+
 
 function getCoords(loc) {
   for (const [city,c] of Object.entries(COORDS)) { if (loc.includes(city)) return c; }
@@ -351,9 +384,13 @@ function getPublicCount(e) { return publicCounts[eventKey(e)] || 0; }
 
 
 let activeFilters=new Set(['alle']), searchTerm='', viewMode='list', quickFilter='alle', sortMode='date', leafletMap=null, showPast=false;
-let appMode = 'party'; // 'party' or 'family'
+let appMode = 'party'; // 'party' | 'family' | 'sonstige'
 
-function getActiveEvents() { return appMode === 'family' ? familyEvents : events; }
+function getActiveEvents() {
+  if (appMode === 'family') return familyEvents;
+  if (appMode === 'sonstige') return sonsigeEvents;
+  return events;
+}
 let wishlist = new Set(JSON.parse(localStorage.getItem('viana_wl')||'[]'));
 let goingList = new Set(JSON.parse(localStorage.getItem('viana_going')||'[]'));
 
@@ -372,11 +409,11 @@ function isThisMonth(ds){ const today=new Date(),d=new Date(ds);return d.getMont
 function isToday(ds){ const today=new Date();today.setHours(0,0,0,0);const d=new Date(ds);d.setHours(0,0,0,0);return d.getTime()===today.getTime(); }
 
 function getFiltered() {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const q=searchTerm.toLowerCase(), today=new Date();today.setHours(0,0,0,0);
   const allFiltered_pre = sourceEvents.filter(e => showPast || new Date(e.end) >= today);
   let filtered=allFiltered_pre.filter(e=>{
-    const matchCat=activeFilters.has('alle')?true:appMode==='family'?true:(activeFilters.has('free')&&e.free)||(activeFilters.has(e.cat));
+    const matchCat=activeFilters.has('alle')?true:(appMode==='family'||appMode==='sonstige')?true:(activeFilters.has(e.cat));
     const matchSearch=!q||e.name.toLowerCase().includes(q)||e.loc.toLowerCase().includes(q)||(e.genre||'').toLowerCase().includes(q)||(e.desc||'').toLowerCase().includes(q);
     let matchQuick=true;
     if(quickFilter==='today') matchQuick=isToday(e.start);
@@ -476,9 +513,8 @@ window.togglePast = togglePast;
 
 function render() {
   const filtered=getFiltered();
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   document.getElementById('total-count').textContent=sourceEvents.length;
-  document.getElementById('free-count').textContent=sourceEvents.filter(e=>e.free).length;
   if(viewMode==='map'){
     document.getElementById('cal').style.display='none';
     document.getElementById('map-wrap').style.display='block';
@@ -486,7 +522,7 @@ function render() {
   }
   document.getElementById('cal').style.display='';
   document.getElementById('map-wrap').style.display='none';
-  const _src = appMode === 'family' ? familyEvents : events;
+  const _src = getActiveEvents();
   const _today = new Date(); _today.setHours(0,0,0,0);
   const pastCount = _src.filter(e => new Date(e.end) < _today).length;
   const byMonth={};
@@ -569,7 +605,7 @@ function showToast(msg) {
 }
 
 function toggleWishlist(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx], key=e.name+e.start;
   const btn=document.querySelector(`.heart-btn[onclick*="toggleWishlist(${idx})"]`);
   if(wishlist.has(key)){wishlist.delete(key);if(btn){btn.textContent='🤍';btn.classList.remove('saved');}showToast(`Entfernt: ${e.name}`);}
@@ -578,7 +614,7 @@ function toggleWishlist(idx) {
 }
 
 function toggleGoing(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx], key=e.name+e.start, wasGoing=goingList.has(key);
   if(wasGoing){ goingList.delete(key); showToast('Entfernt aus "Ich gehe hin"'); }
   else{ goingList.add(key); showToast(`✅ Ich gehe hin: ${e.name}!`); }
@@ -596,7 +632,7 @@ function updateWishlistUI() {
 
 function renderWishlistPanel() {
   const body=document.getElementById('wl-body'), footer=document.getElementById('wl-footer');
-  const saved=[...events,...familyEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
+  const saved=[...events,...familyEvents,...sonsigeEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
   if(!saved.length){body.innerHTML='<div class="wishlist-empty">Noch keine Events gemerkt.<br>Klick auf 🤍 bei einem Event!</div>';footer.style.display='none';return;}
   footer.style.display='flex';
   body.innerHTML=saved.map(e=>{
@@ -608,7 +644,7 @@ function renderWishlistPanel() {
 function removeFromWishlist(key) {wishlist.delete(key);saveWishlist();updateWishlistUI();render();}
 
 function openModal(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx], col=CAT_COLORS[e.cat]||'#34d399';
   document.getElementById('m-cat').textContent=CAT_LABELS[e.cat];
   document.getElementById('m-cat').style.color=col;
@@ -687,7 +723,7 @@ function openModal(idx) {
 }
 
 function toggleWishlistModal(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx], key=e.name+e.start, btn=document.getElementById('modal-heart-btn');
   if(wishlist.has(key)){wishlist.delete(key);if(btn){btn.textContent='🤍 Merken';btn.className='mas-btn mas-heart-idle';}showToast(`Entfernt: ${e.name}`);}
   else{wishlist.add(key);if(btn){btn.textContent='❤️ Gemerkt (entfernen)';btn.className='mas-btn mas-heart-active';}showToast(`Gemerkt: ${e.name} ❤️`);}
@@ -695,7 +731,7 @@ function toggleWishlistModal(idx) {
 }
 
 function toggleGoingModal(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx], key=e.name+e.start, btn=document.getElementById('modal-going-btn'), wasGoing=goingList.has(key);
   if(wasGoing){ goingList.delete(key); if(btn){btn.textContent='📅 Ich gehe hin!';btn.className='mas-btn mas-going-idle';} showToast('Entfernt aus "Ich gehe hin"'); }
   else{ goingList.add(key); if(btn){btn.textContent='✅ Dabei! (entfernen)';btn.className='mas-btn mas-going-active';} showToast(`✅ ${e.name} – du bist dabei!`); }
@@ -810,7 +846,7 @@ function copyDeepLink(url) {
 }
 
 function downloadICS(idx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const e=sourceEvents[idx];
   const dtstart=e.start.replace(/-/g,'');
   const endDate=new Date(e.end);endDate.setDate(endDate.getDate()+1);
@@ -823,7 +859,7 @@ function downloadICS(idx) {
 }
 
 function renderSimilarEvents(currentIdx) {
-  const sourceEvents = appMode === 'family' ? familyEvents : events;
+  const sourceEvents = getActiveEvents();
   const current=sourceEvents[currentIdx];
   const similar=sourceEvents.filter((e,i)=>i!==currentIdx&&e.cat===current.cat).sort((a,b)=>Math.abs(new Date(a.start)-new Date(current.start))-Math.abs(new Date(b.start)-new Date(current.start))).slice(0,3);
   if(!similar.length)return;
@@ -852,23 +888,31 @@ function selectSuggestion(idx) {
 
 
 // ── MODE SWITCHER ─────────────────────────────────────────────────────────────
-document.getElementById('tab-party').addEventListener('click', () => {
-  appMode='party'; activeFilters=new Set(['alle']); quickFilter='alle'; searchTerm='';
+function resetTabUI() {
+  activeFilters=new Set(['alle']); quickFilter='alle'; searchTerm='';
   document.getElementById('search').value='';
-  document.querySelectorAll('.pill').forEach(p=>{p.classList.toggle('active',p.dataset.cat==='alle');});activeFilters=new Set(['alle']);
+  document.querySelectorAll('.pill').forEach(p=>{p.classList.toggle('active',p.dataset.cat==='alle');});
+  activeFilters=new Set(['alle']);
   document.querySelectorAll('.qpill').forEach(p=>{p.classList.toggle('active',p.dataset.quick==='alle');});
-  document.getElementById('tab-party').className='mode-tab active-party';
+  document.getElementById('tab-party').className='mode-tab';
   document.getElementById('tab-family').className='mode-tab';
+  document.getElementById('tab-sonstige').className='mode-tab';
+}
+document.getElementById('tab-party').addEventListener('click', () => {
+  appMode='party'; resetTabUI();
+  document.getElementById('tab-party').className='mode-tab active-party';
   document.querySelector('.filter-pills').style.display='';
   buildMonthTimeline(); updateCountdown(); render();
 });
 document.getElementById('tab-family').addEventListener('click', () => {
-  appMode='family'; activeFilters=new Set(['alle']); quickFilter='alle'; searchTerm='';
-  document.getElementById('search').value='';
-  document.querySelectorAll('.pill').forEach(p=>{p.classList.toggle('active',p.dataset.cat==='alle');});activeFilters=new Set(['alle']);
-  document.querySelectorAll('.qpill').forEach(p=>{p.classList.toggle('active',p.dataset.quick==='alle');});
+  appMode='family'; resetTabUI();
   document.getElementById('tab-family').className='mode-tab active-family';
-  document.getElementById('tab-party').className='mode-tab';
+  document.querySelector('.filter-pills').style.display='none';
+  buildMonthTimeline(); updateCountdown(); render();
+});
+document.getElementById('tab-sonstige').addEventListener('click', () => {
+  appMode='sonstige'; resetTabUI();
+  document.getElementById('tab-sonstige').className='mode-tab active-sonstige';
   document.querySelector('.filter-pills').style.display='none';
   buildMonthTimeline(); updateCountdown(); render();
 });
@@ -923,13 +967,13 @@ document.getElementById('sort-select').addEventListener('change',e=>{sortMode=e.
 document.getElementById('wl-open-btn').addEventListener('click',()=>{renderWishlistPanel();document.getElementById('wishlist-panel').classList.add('open');});
 document.getElementById('wl-close').addEventListener('click',()=>document.getElementById('wishlist-panel').classList.remove('open'));
 document.getElementById('wl-share-wa').addEventListener('click',()=>{
-  const saved=[...events,...familyEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
+  const saved=[...events,...familyEvents,...sonsigeEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
   if(!saved.length)return;
   const list=saved.map(e=>`• ${e.name} – ${dateStr(e.start,e.end)}`).join('\n');
   window.open(`https://wa.me/?text=${encodeURIComponent('Hey! 👋 Meine Nürnberg Events 2026 – wer kommt mit?\n\n'+list)}`, '_blank');
 });
 document.getElementById('wl-copy-link').addEventListener('click',()=>{
-  const saved=[...events,...familyEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
+  const saved=[...events,...familyEvents,...sonsigeEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
   if(!saved.length)return;
   navigator.clipboard.writeText(`Meine Nürnberg Events 2026:\n\n${saved.map(e=>`• ${e.name} – ${dateStr(e.start,e.end)} – ${e.loc}`).join('\n')}`).catch(()=>{});
   showToast('📋 Liste kopiert!');
