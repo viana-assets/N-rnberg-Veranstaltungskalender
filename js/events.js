@@ -467,10 +467,10 @@ function eventRowHTML(e) {
       ${pubCount>0?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25)">✅ ${pubCount} dabei</span>`:''}
       <div style="display:flex;gap:4px;margin-top:2px">
         <button class="going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich gehe hin">${goingList.has(e.name+e.start)?'✅ Dabei':'📅 Dabei?'}</button>
-        <button class="heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
         ${e.ticket?`<a class="web-row-btn" href="${e.ticket}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐</a>`:''}
       </div>
     </div>
+    <button class="row-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
   </div>`;
 }
 
@@ -616,7 +616,7 @@ function toggleGoing(idx) {
 }
 
 function updateWishlistUI() {
-  const total=wishlist.size, btn=document.getElementById('wl-open-btn');
+  const total=wishlist.size+goingList.size, btn=document.getElementById('wl-open-btn');
   document.getElementById('wl-count').textContent=total;
   btn.style.display=total>0?'flex':'none';
   renderWishlistPanel();
@@ -624,16 +624,36 @@ function updateWishlistUI() {
 
 function renderWishlistPanel() {
   const body=document.getElementById('wl-body'), footer=document.getElementById('wl-footer');
-  const saved=[...events,...familyEvents,...sonsigeEvents].filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
-  if(!saved.length){body.innerHTML='<div class="wishlist-empty">Noch keine Events gemerkt.<br>Klick auf 🤍 bei einem Event!</div>';footer.style.display='none';return;}
+  const allEvts=[...events,...familyEvents,...sonsigeEvents];
+  const saved=allEvts.filter(e=>wishlist.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
+  const going=allEvts.filter(e=>goingList.has(e.name+e.start)).sort((a,b)=>a.start.localeCompare(b.start));
+  if(!saved.length&&!going.length){
+    body.innerHTML='<div class="wishlist-empty">Noch nichts gespeichert.<br>Klick auf 🤍 oder 📅 bei einem Event!</div>';
+    footer.style.display='none';return;
+  }
   footer.style.display='flex';
-  body.innerHTML=saved.map(e=>{
-    const idx=events.indexOf(e), col=CAT_COLORS[e.cat]||'#888', key=e.name+e.start;
-    return `<div class="wl-item" onclick="openModal(${idx})"><div class="wl-item-name" style="color:${col}">❤️ ${e.name}</div><div class="wl-item-date">📅 ${dateStr(e.start,e.end)} · 📍 ${e.loc}</div><button class="wl-remove" onclick="event.stopPropagation();removeFromWishlist('${key}')">✕</button></div>`;
-  }).join('');
+  const savedHTML=saved.length?`
+    <div class="wl-section-title">❤️ Gemerkte Events</div>
+    ${saved.map(e=>{const idx=allEvts.indexOf(e),col=CAT_COLORS[e.cat]||'#888',key=e.name+e.start;
+      return `<div class="wl-item" onclick="openModal(${idx})"><div class="wl-item-name" style="color:${col}">❤️ ${e.name}</div><div class="wl-item-date">📅 ${dateStr(e.start,e.end)} · 📍 ${e.loc}</div><button class="wl-remove" onclick="event.stopPropagation();removeFromWishlist('${key}')">✕</button></div>`;
+    }).join('')}`:'';
+  const goingHTML=going.length?`
+    <div class="wl-section-title" style="margin-top:${saved.length?'1rem':'0'}">✅ Ich bin dabei</div>
+    ${going.map(e=>{const idx=allEvts.indexOf(e),col=CAT_COLORS[e.cat]||'#888',key=e.name+e.start;
+      return `<div class="wl-item" onclick="openModal(${idx})"><div class="wl-item-name" style="color:${col}">✅ ${e.name}</div><div class="wl-item-date">📅 ${dateStr(e.start,e.end)} · 📍 ${e.loc}</div><button class="wl-remove" onclick="event.stopPropagation();removeFromGoing('${key}')">✕</button></div>`;
+    }).join('')}`:'';
+  body.innerHTML=savedHTML+goingHTML;
 }
 
 function removeFromWishlist(key) {wishlist.delete(key);saveWishlist();updateWishlistUI();render();}
+function removeFromGoing(key) {
+  goingList.delete(key);
+  saveGoingList();
+  // Öffentlichen Zähler um -1 reduzieren
+  const e=[...events,...familyEvents,...sonsigeEvents].find(ev=>ev.name+ev.start===key);
+  if(e) savePublicCount(e,-1);
+  updateWishlistUI();render();
+}
 
 function openModal(idx) {
   const sourceEvents = getActiveEvents();

@@ -56,8 +56,9 @@
 @media (max-width: 600px) {
   .places-corner { top: 12px; right: 12px; padding: 7px 13px; font-size: 12px; }
 }
-/* Modal offen → Places-Button ausblenden damit er den X-Button nicht überlagert */
-body:has(#modal-bg.open) .places-corner {
+/* Modal oder Merkliste offen → Places-Button ausblenden */
+body:has(#modal-bg.open) .places-corner,
+body:has(#wishlist-panel.open) .places-corner {
   display: none;
 }
 </style>

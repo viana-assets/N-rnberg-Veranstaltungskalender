@@ -106,6 +106,8 @@ h1 span{color:var(--accent)}
 .heart-btn{background:none;border:none;cursor:pointer;font-size:18px;line-height:1;padding:4px;color:var(--muted);transition:all .2s}
 .heart-btn:hover{transform:scale(1.2)}
 .heart-btn.saved{color:#f43f5e}
+.row-heart-btn{position:absolute;top:8px;right:8px;background:rgba(14,15,19,0.75);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all .15s;z-index:2;line-height:1}
+.row-heart-btn:hover,.row-heart-btn.saved{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.35)}
 .going-btn{background:none;border:none;cursor:pointer;padding:4px 6px;color:var(--muted);transition:all .2s;border-radius:6px;display:flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif;font-size:11px}
 .going-btn:hover{background:rgba(52,211,153,.1);color:#34d399}
 .going-btn.going{color:#34d399;background:rgba(52,211,153,.12)}
@@ -192,6 +194,7 @@ h1 span{color:var(--accent)}
 .similar-info{flex:1;min-width:0}
 .similar-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .similar-date{font-size:11px;color:var(--muted)}
+.wl-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:4px 0 8px;border-bottom:1px solid var(--border);margin-bottom:6px}
 /* WISHLIST */
 .wishlist-btn{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--accent);color:#0e0f13;border:none;border-radius:999px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:60;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(232,150,58,.4);transition:transform .15s,box-shadow .15s}
 .wishlist-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(232,150,58,.5)}
