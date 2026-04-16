@@ -733,7 +733,7 @@ function openModal(idx) {
   if (logoEl) {
     const logoDomain = getTicketDomain(e.ticket);
     if (e.viana) {
-      logoEl.innerHTML = `<img src="assets/icon-192x192.png" alt="Viana" loading="lazy" style="width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.5))">`;
+      logoEl.innerHTML = `<img src="assets/icon-96x96.png" alt="Viana" loading="lazy" style="width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.5))">`;
       logoEl.style.display = 'flex';
     } else if (logoDomain) {
       logoEl.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${logoDomain}&sz=64" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">`;
