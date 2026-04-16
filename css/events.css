@@ -296,8 +296,10 @@ html{scrollbar-width:auto;scrollbar-color:#6b7280 #1e2029}
 /* ── VIANA EVENTS – Goldener Rahmen ── */
 .event-row.viana-event {
   border: 2px solid #c9a227 !important;
+  outline: 2px solid #c9a227;
+  outline-offset: -2px;
   background: linear-gradient(90deg, rgba(201,162,39,0.09) 0%, var(--surface) 100%);
-  box-shadow: 0 0 12px rgba(201,162,39,0.2);
+  box-shadow: 0 0 14px rgba(201,162,39,0.25);
 }
 .event-row.viana-event::before {
   background: #c9a227 !important;
