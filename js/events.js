@@ -498,7 +498,10 @@ function eventRowHTML(e) {
   return `<div class="event-row${highlightClass}" data-idx="${idx}" style="--cat-color:${col};position:relative">
     <div class="row-corner">
       ${pubCount>0?`<span class="row-dabei-badge">✅ ${pubCount}</span>`:''}
-      <button class="row-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
+      <div class="row-action-btns">
+        <button class="row-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
+        <button class="row-going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich bin dabei">👍</button>
+      </div>
     </div>
     <div class="event-date-col">
       <div class="event-day">${sd.getDate()}.</div>
@@ -523,10 +526,7 @@ function eventRowHTML(e) {
     <div class="event-right">
       <span class="cat-badge" style="background:${col}">${CAT_LABELS[e.cat]}</span>
       ${pubCount>0?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25)">✅ ${pubCount} dabei</span>`:''}
-      <div style="display:flex;gap:4px;margin-top:2px">
-        <button class="row-going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich bin dabei">👍</button>
-        ${e.ticket?`<a class="web-row-btn" href="${e.ticket}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐</a>`:''}
-      </div>
+      ${e.ticket?`<a class="web-row-btn" href="${e.ticket}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐</a>`:''}
     </div>
   </div>`;
 }
