@@ -688,6 +688,8 @@ let _activeCat = null;
 let _activeSubcat = 'alle';
 let _searchQuery = '';
 let _maxRadius = 9999;
+let _placesViewMode = 'list';
+let _placesLeafletMap = null;
 
 function openCategory(catId) {
   _activeCat = catId;
@@ -766,6 +768,7 @@ function buildSubcatPills(catId) {
 
 function renderPlacesList(catId) {
   const container = document.getElementById('places-rows');
+  const mapWrap = document.getElementById('places-map-wrap');
   if (!container) return;
   let data = PLACES[catId] || [];
 
@@ -803,6 +806,17 @@ function renderPlacesList(catId) {
   const countEl = document.getElementById('places-count');
   if (countEl) countEl.textContent = `${data.length} Einträge`;
 
+  // Handle map view separately
+  if (_placesViewMode === 'map') {
+    container.style.display = 'none';
+    if (mapWrap) { mapWrap.style.display = 'block'; renderPlacesMap(data, catId); }
+    return;
+  }
+  // List or Grid view
+  if (mapWrap) { mapWrap.style.display = 'none'; }
+  if (_placesLeafletMap) { _placesLeafletMap.remove(); _placesLeafletMap = null; }
+  container.style.display = '';
+
   if (!data.length) {
     container.innerHTML = `<div class="places-empty"><span class="emoji">🔍</span>Keine Einträge gefunden</div>`;
     return;
@@ -812,6 +826,29 @@ function renderPlacesList(catId) {
   window._renderedPlaces = data;
 
   const cat = PLACE_CATS.find(c => c.id === catId);
+  const catColor = cat ? cat.color : 'var(--accent)';
+
+  if (_placesViewMode === 'grid') {
+    container.innerHTML = `<div class="places-grid">${data.map((p, idx) => {
+      const distBadge = p._dist !== null ? `<span class="dist-badge">~${p._dist} km</span>` : '';
+      const logoHtml = p.web ? `<img class="place-logo" src="https://www.google.com/s2/favicons?domain=${p.web}&sz=32" alt="" loading="lazy" onerror="this.style.display='none'">` : '';
+      const preisBadge = p.preis ? `<span class="place-badge">💶 ${p.preis}</span>` : '';
+      const oeffBadge = p.oeffnung ? `<span class="place-badge">🕐 ${p.oeffnung}</span>` : '';
+      return `<div class="place-card" style="--cat-color:${catColor}" onclick="openPlaceModal(${idx})">
+        <div class="place-card-header">
+          <div class="place-card-logo">${logoHtml}</div>
+          ${distBadge}
+        </div>
+        <div class="place-card-name">${p.name}</div>
+        <div class="place-card-addr">📍 ${p.city || p.addr}</div>
+        <div class="place-card-meta">${preisBadge}${oeffBadge}</div>
+        ${p.highlight ? `<div class="place-card-highlight">⭐ ${p.highlight}</div>` : ''}
+      </div>`;
+    }).join('')}</div>`;
+    return;
+  }
+
+  // Default: list view
   container.innerHTML = data.map((p, idx) => {
     const distBadge = p._dist !== null ? `<span class="dist-badge">~${p._dist} km</span>` : '';
     const tags = (p.tags||[]).slice(0, 3).map(t => `<span class="place-badge">${t}</span>`).join('');
@@ -821,7 +858,7 @@ function renderPlacesList(catId) {
     const hhBadge = p.happyhour ? `<span class="place-badge place-badge-hh">🎉 HH: ${p.happyhour}</span>` : '';
     const logoHtml = p.web ? `<img class="place-logo" src="https://www.google.com/s2/favicons?domain=${p.web}&sz=32" alt="" loading="lazy" onerror="this.style.display='none'">` : '';
     return `
-      <div class="place-row" style="--cat-color:${cat ? cat.color : 'var(--accent)'}" onclick="openPlaceModal(${idx})">
+      <div class="place-row" style="--cat-color:${catColor}" onclick="openPlaceModal(${idx})">
         <div class="place-left">
           <div class="place-name-row">
             ${logoHtml}
@@ -837,6 +874,35 @@ function renderPlacesList(catId) {
         </div>
       </div>`;
   }).join('');
+}
+
+function renderPlacesMap(data, catId) {
+  const wrap = document.getElementById('places-map-wrap');
+  if (!wrap) return;
+  const withCoords = data.filter(p => p.lat && p.lng);
+  if (!withCoords.length) {
+    wrap.innerHTML = '<div class="map-no-results">Keine Koordinaten für diese Kategorie verfügbar.</div>';
+    return;
+  }
+  wrap.innerHTML = '<div id="places-map"></div>';
+  if (_placesLeafletMap) { _placesLeafletMap.remove(); _placesLeafletMap = null; }
+  const cat = PLACE_CATS.find(c => c.id === catId);
+  const catColor = cat ? cat.color : '#e8963a';
+  _placesLeafletMap = L.map('places-map', { zoomControl: true }).setView([49.45, 11.07], 10);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap, © CARTO', subdomains: 'abcd', maxZoom: 19
+  }).addTo(_placesLeafletMap);
+  withCoords.forEach((p, idx) => {
+    const marker = L.circleMarker([p.lat, p.lng], {
+      radius: 9, fillColor: catColor, color: '#0e0f13', weight: 2, opacity: 1, fillOpacity: 0.9
+    }).addTo(_placesLeafletMap);
+    marker.bindPopup(`<div class="popup-name">${p.name}</div><div class="popup-loc">📍 ${p.addr}</div>${p.preis ? `<div class="popup-loc">💶 ${p.preis}</div>` : ''}`);
+    marker.on('click', () => {
+      window._renderedPlaces = data;
+      openPlaceModal(data.indexOf(p));
+    });
+  });
+  setTimeout(() => _placesLeafletMap.invalidateSize(), 100);
 }
 
 function backToCats() {
@@ -926,6 +992,24 @@ function closePlaceModal() {
   if (bg) bg.classList.remove('open');
   document.body.style.overflow = '';
 }
+
+// ── PLACES VIEW TOGGLE ───────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  function setPlacesView(mode) {
+    _placesViewMode = mode;
+    document.querySelectorAll('#places-list-section .view-btn').forEach(b => b.classList.remove('active'));
+    const btnMap = { list: 'places-btn-list', grid: 'places-btn-grid', map: 'places-btn-map' };
+    const el = document.getElementById(btnMap[mode]);
+    if (el) el.classList.add('active');
+    if (_activeCat) renderPlacesList(_activeCat);
+  }
+  const btnList = document.getElementById('places-btn-list');
+  const btnGrid = document.getElementById('places-btn-grid');
+  const btnMap  = document.getElementById('places-btn-map');
+  if (btnList) btnList.addEventListener('click', () => setPlacesView('list'));
+  if (btnGrid) btnGrid.addEventListener('click', () => setPlacesView('grid'));
+  if (btnMap)  btnMap.addEventListener('click',  () => setPlacesView('map'));
+});
 
 // Expose globals
 window.initPlaces   = initPlaces;

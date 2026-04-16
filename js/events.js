@@ -534,10 +534,13 @@ function eventRowHTML(e) {
 function eventCardHTML(e) {
   const col=CAT_COLORS[e.cat]||'#888', idx=getActiveEvents().indexOf(e);
   const diff=getDaysUntil(e.start), isToday_=diff===0;
-  const isSaved=wishlist.has(e.name+e.start);
+  const isSaved=wishlist.has(e.name+e.start), isGoing=goingList.has(e.name+e.start);
   const cdLabel=diff===0?'🔴 HEUTE':diff===1?'⏳ Morgen':diff>0&&diff<=14?`⏳ in ${diff} Tagen`:'';
   return `<div class="event-card${isToday_?' today-event':''}" data-idx="${idx}" style="--cat-color:${col}">
-    <button class="card-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
+    <div class="card-action-btns">
+      <button class="card-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
+      <button class="card-going-btn${isGoing?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich bin dabei">${isGoing?'👍':'👍'}</button>
+    </div>
     ${cdLabel?`<div class="card-countdown">${cdLabel}</div>`:''}
     ${userLat!==null?`<div style="font-size:11px;color:#5b8ff9;margin-bottom:4px;font-weight:600">📍 ${distLabel(getEventDist(e))}</div>`:''}
     <div class="card-date">${dateStr(e.start,e.end)} · ${DAYS[new Date(e.start).getDay()]}.</div>
@@ -548,7 +551,7 @@ function eventCardHTML(e) {
       <span class="cat-badge" style="background:${col}">${CAT_LABELS[e.cat]}</span>
       ${e.free?'<span class="badge badge-free">★ Kostenlos</span>':''}
       ${e.new?'<span class="badge badge-new">NEU</span>':''}
-      ${goingList.has(e.name+e.start)?'<span class="going-badge">✅ Dabei</span>':''}
+      ${isGoing?'<span class="going-badge">✅ Dabei</span>':''}
     </div>
   </div>`;
 }
@@ -778,7 +781,7 @@ function openModal(idx) {
         <a class="mas-btn mas-apple" href="${appleMapsUrl}" target="_blank">${PIN_SVG} Apple Maps</a>
         <a class="mas-btn mas-transit" href="${transitUrl}" target="_blank" rel="noopener">🚌 Mit ÖPNV hin</a>
       </div>
-      ${e.oepnv?`<div class="mas-oepnv-hint">🚊 ${e.oepnv}</div>`:''}
+      ${e.oepnv?`<div class="mas-oepnv-hint"><span style="flex-shrink:0">🚊</span><span><strong style="color:rgba(251,191,36,.8);font-size:10px;display:block;margin-bottom:1px">ÖPNV-Tipp</strong>${e.oepnv}</span></div>`:''}
     </div>
     <div class="modal-action-section">
       <div class="mas-label">✅ Ich bin dabei</div>

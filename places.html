@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/places.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 /* ── BURGER BUTTON ── */
 .burger-btn {
@@ -106,18 +108,18 @@ body:has(#place-modal-bg.open) .burger-btn { display: none; }
 <div class="nav-overlay" id="nav-overlay"></div>
 <nav class="nav-drawer" id="nav-drawer" aria-label="Navigation">
   <div class="nav-drawer-header">
-    <div class="nav-drawer-logo">Viana</div>
+    <div class="nav-drawer-logo"><span style="color:#fff">Vi</span><span style="color:#e8963a">ana</span></div>
     <button class="nav-drawer-close" id="nav-close" aria-label="Schließen">×</button>
   </div>
   <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Startseite</a>
-  <a href="events.html" class="nav-item"><span class="nav-icon">🎉</span> Events 2026</a>
+  <a href="events.html" class="nav-item"><span class="nav-icon">🎉</span> Events</a>
   <a href="places.html" class="nav-item nav-active"><span class="nav-icon">📍</span> Places</a>
 </nav>
 
 
 <header>
-  <div class="header-badge">Viana Places 2026</div>
-  <h1 class="header-title">Viana Places</h1>
+  <div class="header-badge"><span style="color:#fff">Vi</span><span style="color:#e8963a">ana</span> Places 2026</div>
+  <h1 class="header-title"><span style="color:#fff">Vi</span><span style="color:#e8963a">ana</span> Places</h1>
   <p class="header-sub">Die besten Locations, Ausflugsziele & mehr rund um Nürnberg</p>
 </header>
 
@@ -153,6 +155,11 @@ body:has(#place-modal-bg.open) .burger-btn { display: none; }
         <option value="dist">📍 Entfernung</option>
         <option value="alpha">🔤 A–Z</option>
       </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="places-btn-list">≡ Liste</button>
+        <button class="view-btn" id="places-btn-grid">⊞ Grid</button>
+        <button class="view-btn" id="places-btn-map">🗺 Karte</button>
+      </div>
     </div>
 
     <!-- Location & Radius filter -->
@@ -180,12 +187,14 @@ body:has(#place-modal-bg.open) .burger-btn { display: none; }
 
     <!-- Places rows -->
     <div id="places-rows"></div>
+    <!-- Map view -->
+    <div id="places-map-wrap" style="display:none"></div>
   </div>
 
 </main>
 
 <footer style="text-align:center;padding:2.5rem 2rem;background:var(--surface);margin-top:2rem;font-size:13px;color:var(--muted)">
-  <p style="margin-bottom:8px">Ein Projekt von <strong style="color:var(--text)">Viana</strong> &nbsp;·&nbsp; Alle Angaben ohne Gewähr &nbsp;·&nbsp; Stand April 2026</p>
+  <p style="margin-bottom:8px">Ein Projekt von <strong><span style="color:#fff">Vi</span><span style="color:#e8963a">ana</span></strong> &nbsp;·&nbsp; Alle Angaben ohne Gewähr &nbsp;·&nbsp; Stand April 2026</p>
   <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:8px">
     <a href="impressum.html" style="color:var(--accent);text-decoration:none">Impressum</a>
     <a href="datenschutz.html" style="color:var(--accent);text-decoration:none">Datenschutz</a>
