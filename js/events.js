@@ -2,8 +2,8 @@ function getTicketDomain(url) {
   if (!url) return '';
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e) { return ''; }
 }
-const CAT_COLORS = {festival:'#5b8ff9',kaerwa:'#c8974e',bierfest:'#e8963a',volksfest:'#c8974e',afterwork:'#a78bfa',sonstige:'#34d399',family:'#34d399',russian:'#f472b6',strand:'#06b6d4',messe:'#64748b',weinfest:'#a855f7'};
-const CAT_LABELS = {festival:'Festival',kaerwa:'Kärwa / Kirchweih',bierfest:'Bierfest',volksfest:'Volksfest',afterwork:'After Work / Club Night',sonstige:'Sonstiges',family:'Familie',russian:'🇷🇺 Russian Event',strand:'🏖️ Stadtstrand',messe:'🏛️ Messe',weinfest:'Weinfest'};
+const CAT_COLORS = {festival:'#5b8ff9',kaerwa:'#c8974e',bierfest:'#e8963a',volksfest:'#c8974e',afterwork:'#a78bfa',sonstige:'#34d399',family:'#34d399',russian:'#f472b6',strand:'#06b6d4',messe:'#64748b',weinfest:'#a855f7',privat:'#c9a227'};
+const CAT_LABELS = {festival:'Festival',kaerwa:'Kärwa / Kirchweih',bierfest:'Bierfest',volksfest:'Volksfest',afterwork:'After Work / Club Night',sonstige:'Sonstiges',family:'Familie',russian:'🇷🇺 Russian Event',strand:'🏖️ Stadtstrand',messe:'🏛️ Messe',weinfest:'Weinfest',privat:'🔒 Privat'};
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
 const MONTHS_S = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -264,7 +264,7 @@ const events = [
 
   // ─── THE GARRISON EVENTS ─────────────────────────────────────────────────
   {cat:'russian', name:'The Garrison Events – Party Night', loc:'Osnabrück', start:'2026-04-18', end:'2026-04-18', free:false, desc:'The Garrison Events – russische Party-Reihe auf Deutschlandtour. Aktuelle Infos auf @the_garrison_events_ (Instagram).', genre:'Russian Party', ticket:'https://linktr.ee/the_garrison_events', outdoor:false, ageMin:18, price:'Infos via Instagram', oepnv:'Bahn nach Osnabrück Hbf', parking:'Vorhanden'},
-  {cat:'russian', name:'Viana Gartenparty', loc:'Viana Gartenparty Nürnberg', lat:49.38481, lng:11.10000, start:'2026-04-25', end:'2026-04-25', free:true, desc:'Die Viana Gartenparty – ein unvergesslicher Tag für die ganze Community! Shisha, Grillen, Cocktails, Spiele, Sonnen und Kinderbetreuung. Entspannte Atmosphäre im privaten Garten – organisiert von Viana Events.', genre:'Garden Party / Community', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos (Einladung)', oepnv:'Nürnberg ÖPNV', parking:'Vorhanden', viana:true, new:true},
+  {cat:'privat', name:'Viana Gartenparty', loc:'Viana Gartenparty Nürnberg', lat:49.38481, lng:11.10000, start:'2026-04-25', end:'2026-04-25', free:true, desc:'Die Viana Gartenparty – ein unvergesslicher Tag für die ganze Community! Shisha, Grillen, Cocktails, Spiele, Sonnen und Kinderbetreuung. Entspannte Atmosphäre im privaten Garten – organisiert von Viana Events.', genre:'Garden Party / Community', ticket:'', outdoor:true, ageMin:0, price:'Kostenlos (Einladung)', oepnv:'Nürnberg ÖPNV', parking:'Vorhanden', viana:true, new:true},
   {cat:'russian', name:'The Garrison Events – Party Night', loc:'Kassel', start:'2026-04-25', end:'2026-04-25', free:false, desc:'The Garrison Events – russische Party-Reihe auf Deutschlandtour. Aktuelle Infos auf @the_garrison_events_ (Instagram).', genre:'Russian Party', ticket:'https://linktr.ee/the_garrison_events', outdoor:false, ageMin:18, price:'Infos via Instagram', oepnv:'Bahn nach Kassel Hbf', parking:'Vorhanden'},
   {cat:'russian', name:'The Garrison Events – Party Night', loc:'Kiel', start:'2026-05-02', end:'2026-05-02', free:false, desc:'The Garrison Events – russische Party-Reihe auf Deutschlandtour. Aktuelle Infos auf @the_garrison_events_ (Instagram).', genre:'Russian Party', ticket:'https://linktr.ee/the_garrison_events', outdoor:false, ageMin:18, price:'Infos via Instagram', oepnv:'Bahn nach Kiel Hbf', parking:'Vorhanden'},
   // ─── NEU APRIL 2026 UPDATE ────────────────────────────────────────────
@@ -807,6 +807,7 @@ function openModal(idx) {
       <div class="mas-label">🗂 Merkliste & Kalender</div>
       <div class="mas-row mas-row-wrap">
         <button class="mas-btn ${isSaved?'mas-heart-active':'mas-heart-idle'}" id="modal-heart-btn" onclick="toggleWishlistModal(${idx})">${isSaved?'❤️ Gemerkt (entfernen)':'🤍 Merken'}</button>
+        <button class="mas-btn ${isGoing?'mas-going-active':'mas-going-idle'}" id="modal-going-btn" onclick="toggleGoingModal(${idx})">${isGoing?'👍 Ich bin dabei!':'👍 Ich bin dabei?'}</button>
         <button class="mas-btn mas-ics" onclick="downloadICS(${idx})">📥 .ics speichern</button>
       </div>
     </div>`;
