@@ -524,7 +524,7 @@ function eventRowHTML(e) {
       <span class="cat-badge" style="background:${col}">${CAT_LABELS[e.cat]}</span>
       ${pubCount>0?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25)">✅ ${pubCount} dabei</span>`:''}
       <div style="display:flex;gap:4px;margin-top:2px">
-        <button class="going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich gehe hin">${goingList.has(e.name+e.start)?'✅ Dabei':'📅 Dabei?'}</button>
+        <button class="row-going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich bin dabei">👍</button>
         ${e.ticket?`<a class="web-row-btn" href="${e.ticket}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐</a>`:''}
       </div>
     </div>
@@ -782,16 +782,6 @@ function openModal(idx) {
         <a class="mas-btn mas-transit" href="${transitUrl}" target="_blank" rel="noopener">🚌 Mit ÖPNV hin</a>
       </div>
       ${e.oepnv?`<div class="mas-oepnv-hint"><span style="flex-shrink:0">🚊</span><span><strong style="color:rgba(251,191,36,.8);font-size:10px;display:block;margin-bottom:1px">ÖPNV-Tipp</strong>${e.oepnv}</span></div>`:''}
-    </div>
-    <div class="modal-action-section">
-      <div class="mas-label">✅ Ich bin dabei</div>
-      <div class="mas-going-row">
-        <div class="mas-going-counter">
-          <span class="mas-going-num" id="modal-going-count">${getPublicCount(e)}</span>
-          <span class="mas-going-sub">${getPublicCount(e)===1?'Person ist':'Personen sind'} dabei</span>
-        </div>
-        <button class="mas-btn ${isGoing?'mas-going-active':'mas-going-idle'}" id="modal-going-btn" onclick="toggleGoingModal(${idx})">${isGoing?'✅ Dabei! (entfernen)':'📅 Ich gehe hin!'}</button>
-      </div>
     </div>
     <div class="modal-action-section">
       <div class="mas-label">📤 Teilen</div>
