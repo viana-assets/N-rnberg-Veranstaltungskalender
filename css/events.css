@@ -55,6 +55,7 @@ h1 span{color:var(--accent)}
 .pill[data-cat="sonstige"].active{background:var(--sonstige);border-color:var(--sonstige)}
 .pill[data-cat="russian"].active{background:#f472b6;border-color:#f472b6}
 .pill[data-cat="strand"].active{background:#06b6d4;border-color:#06b6d4}
+.pill[data-cat="beachparty"].active{background:#fbbf24;border-color:#fbbf24;color:#0e0f13}
 .pill-privat{border-color:rgba(201,162,39,0.4) !important;color:#c9a227 !important}
 .pill-privat:hover{border-color:rgba(201,162,39,0.7) !important;background:rgba(201,162,39,0.08) !important}
 .pill[data-cat="privat"].active{background:linear-gradient(90deg,#c9a227,#e8c84a);border-color:#c9a227;color:#0e0f13;box-shadow:0 0 10px rgba(201,162,39,0.4)}
