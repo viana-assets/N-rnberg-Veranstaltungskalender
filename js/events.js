@@ -539,6 +539,7 @@ function eventRowHTML(e) {
       <div class="row-action-btns">
         <button class="row-heart-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleWishlist(${idx})" title="Merken">${isSaved?'❤️':'🤍'}</button>
         <button class="row-going-btn${goingList.has(e.name+e.start)?' going':''}" onclick="event.stopPropagation();toggleGoing(${idx})" title="Ich bin dabei">👍</button>
+        ${e.music?`<button class="music-play-btn music-play-btn-row" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:''}
       </div>
     </div>
     <div class="event-date-col">
@@ -566,7 +567,6 @@ function eventRowHTML(e) {
       <span class="cat-badge" style="background:${col}">${CAT_LABELS[e.cat]}</span>
       ${pubCount>0?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25)">✅ ${pubCount} dabei</span>`:''}
       ${e.ticket?`<a class="web-row-btn" href="${e.ticket}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐</a>`:''}
-      ${e.music?`<button class="music-play-btn" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:''}
     </div>
   </div>`;
 }
@@ -640,17 +640,17 @@ function render() {
 /* ── VIANA SPARKLES ── */
 function injectSparkles(container) {
   container.querySelectorAll('.viana-sparkle').forEach(s=>s.remove());
-  const SHAPES = ['dot','dot','dot','star','star','cross'];
-  const count = 9;
+  const SHAPES = ['dot','dot','dot','dot','star','star','star','cross','cross','diamond'];
+  const count = 26;
   for (let i = 0; i < count; i++) {
     const s = document.createElement('span');
     const shape = SHAPES[Math.floor(Math.random()*SHAPES.length)];
     s.className = 'viana-sparkle viana-sparkle-' + shape;
-    const top = 4 + Math.random() * 88;
-    const left = 3 + Math.random() * 93;
-    const dur = (1.4 + Math.random() * 2.2).toFixed(2);
-    const delay = (Math.random() * 4).toFixed(2);
-    const size = (2.5 + Math.random() * 3.5).toFixed(1);
+    const top = 2 + Math.random() * 94;
+    const left = 1 + Math.random() * 97;
+    const dur = (1.2 + Math.random() * 2.8).toFixed(2);
+    const delay = (Math.random() * 5).toFixed(2);
+    const size = (1.8 + Math.random() * 3.2).toFixed(1);
     s.style.cssText = `top:${top}%;left:${left}%;--dur:${dur}s;--delay:${delay}s;--sz:${size}px`;
     container.appendChild(s);
   }
