@@ -262,7 +262,7 @@ const events = [
   {cat:'afterwork', name:'Sundowner – Season Opening', loc:'Meier Hilzhof, Pilsach', start:'2026-04-18', end:'2026-04-18', free:false, desc:'Terrassenopening der Sundowner-Reihe. 12:00–20:00 Uhr.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 25 €', oepnv:'Auto empfohlen – ländliche Lage bei Neumarkt', parking:'Vorhanden am Hilzhof'},
   {cat:'afterwork', name:'High in the Sky – Rooftop Party', loc:'Design Offices, Königstorgraben 11, 5. OG', start:'2026-04-17', end:'2026-04-17', free:false, desc:'19–01 Uhr. R&B, Hip Hop & House über den Dächern Nürnbergs. DJs + Special Acts.', genre:'R&B / House / Rooftop', ticket:'https://skyeventsmore.ticket.io/', dresscode:'', outdoor:false, ageMin:18, price:'ca. 15 €', oepnv:'U-Bahn U1 bis Hauptbahnhof, 5 min Fußweg', parking:'Parkhäuser Altstadt'},
   {cat:'afterwork', name:'Sundowner White Party im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-05-14', end:'2026-05-14', free:false, desc:'17–23 Uhr. White Party Edition – weißes Outfit Pflicht!', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Alles in Weiß!', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
-  {cat:'afterwork', name:'Sundowner im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-04-23', end:'2026-04-23', free:false, desc:'17–23 Uhr. Seeterrasse am Dutzendteich · House & Club Sounds · DJ Lee Allen.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
+  {cat:'afterwork', name:'Sundowner im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-04-23', end:'2026-04-23', free:false, desc:'17–23 Uhr. Seeterrasse am Dutzendteich · House & Club Sounds · DJ Lee Allen.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)', musicYt:'ATXO17ztWVc', musicTitle:'YouNotUs x Mi Casa – Chucks'},
   {cat:'afterwork', name:'Sundowner im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-06-04', end:'2026-06-04', free:false, desc:'17–23 Uhr. House & Club Sounds auf der Seeterrasse.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
   {cat:'afterwork', name:'Sundowner White Party im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-07-30', end:'2026-07-30', free:false, desc:'17–23 Uhr. White Party Edition.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Alles in Weiß!', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
   {cat:'afterwork', name:'Sundowner im Bootshaus', loc:'Bootshaus Nürnberg, Dutzendteich', start:'2026-08-27', end:'2026-08-27', free:false, desc:'17–23 Uhr. House & Club Sounds auf der Seeterrasse.', genre:'House / Outdoor', ticket:'https://sundowner.ticket.io/', dresscode:'Summer Chic', outdoor:true, ageMin:18, price:'ab 20 €', oepnv:'U1 bis Frankenstraße, dann Bus 55', parking:'Parkplatz Zeppelinfeld (kostenlos)'},
@@ -548,7 +548,7 @@ function eventRowHTML(e) {
       ${isMultiDay?`<div style="font-size:9px;color:var(--accent);font-weight:600;margin-top:3px;line-height:1.2;white-space:nowrap">bis ${ed.getDate()}. ${MONTHS_S[ed.getMonth()]}.</div>`:''}
     </div>
     <div class="event-info">
-      <div class="event-name-row">${favHtml}<span class="event-name">${e.name}</span>${e.music?`<button class="music-play-btn music-play-btn-inline" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:''}</div>
+      <div class="event-name-row">${favHtml}<span class="event-name">${e.name}</span>${e.music?`<button class="music-play-btn music-play-btn-inline" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:e.musicYt?`<button class="music-play-btn music-play-btn-inline" onclick="event.stopPropagation();toggleYtPlayer('${e.musicYt}','${(e.musicTitle||e.name).replace(/'/g,"\\'")}',this)" title="Musik abspielen">▶</button>`:''}</div>
       <div class="event-loc">📍 ${e.loc}</div>
       <div class="event-meta">
         ${countdownLabel(diff)}
@@ -592,7 +592,7 @@ function eventCardHTML(e) {
       ${e.new?'<span class="badge badge-new">NEU</span>':''}
       ${e.viana?'<span class="viana-badge">⭐ Viana Event</span>':''}
       ${isGoing?'<span class="going-badge">✅ Dabei</span>':''}
-      ${e.music?`<button class="music-play-btn music-play-btn-card" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:''}
+      ${e.music?`<button class="music-play-btn music-play-btn-card" data-music="${e.music}" onclick="event.stopPropagation();toggleMusic(this,'${e.music}')" title="Musik abspielen">▶</button>`:e.musicYt?`<button class="music-play-btn music-play-btn-card" onclick="event.stopPropagation();toggleYtPlayer('${e.musicYt}','${(e.musicTitle||e.name).replace(/'/g,"\\'")}',this)" title="Musik abspielen">▶</button>`:''}
     </div>
   </div>`;
 }
@@ -656,6 +656,51 @@ function injectSparkles(container) {
 }
 function initVianaSparkles() {
   document.querySelectorAll('.viana-event').forEach(el => injectSparkles(el));
+}
+
+/* ── YOUTUBE MINI PLAYER ── */
+let _ytActiveBtn = null;
+function toggleYtPlayer(videoId, title, btn) {
+  const player = document.getElementById('yt-mini-player');
+  const iframe = document.getElementById('yt-iframe');
+  const titleEl = document.getElementById('yt-mini-title');
+  const isModal = btn && btn.id === 'modal-music-btn';
+  // If same video already open → close
+  if (player.classList.contains('open') && player.dataset.vid === videoId) {
+    closeYtPlayer();
+    return;
+  }
+  // Reset previous button
+  if (_ytActiveBtn) {
+    const wasModal = _ytActiveBtn.id === 'modal-music-btn';
+    _ytActiveBtn.innerHTML = wasModal ? `▶ ${_ytActiveBtn.dataset.title||'Abspielen'}` : '▶';
+    _ytActiveBtn.classList.remove('playing');
+  }
+  // Open player
+  titleEl.textContent = '🎵 ' + title;
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  player.dataset.vid = videoId;
+  player.classList.add('open');
+  // Update button
+  if (btn) {
+    _ytActiveBtn = btn;
+    if (btn.dataset) btn.dataset.title = title;
+    btn.innerHTML = isModal ? '⏸ Pause' : '⏸';
+    btn.classList.add('playing');
+  }
+}
+function closeYtPlayer() {
+  const player = document.getElementById('yt-mini-player');
+  const iframe = document.getElementById('yt-iframe');
+  player.classList.remove('open');
+  iframe.src = '';
+  player.dataset.vid = '';
+  if (_ytActiveBtn) {
+    const wasModal = _ytActiveBtn.id === 'modal-music-btn';
+    _ytActiveBtn.innerHTML = wasModal ? `▶ ${_ytActiveBtn.dataset.title||'Abspielen'}` : '▶';
+    _ytActiveBtn.classList.remove('playing');
+    _ytActiveBtn = null;
+  }
 }
 
 /* ── MUSIC PLAYER ── */
@@ -871,6 +916,12 @@ function openModal(idx) {
       <div class="mas-label">🎵 Event-Musik</div>
       <div class="mas-row">
         <button class="mas-btn mas-music-btn" id="modal-music-btn" onclick="toggleMusic(this,'${e.music}')">▶ Abspielen</button>
+      </div>
+    </div>` : e.musicYt ? `
+    <div class="modal-action-section">
+      <div class="mas-label">🎵 Event-Musik</div>
+      <div class="mas-row">
+        <button class="mas-btn mas-music-btn" id="modal-music-btn" onclick="toggleYtPlayer('${e.musicYt}','${(e.musicTitle||e.name).replace(/'/g,"\\'")}',this)">▶ ${e.musicTitle||'Abspielen'}</button>
       </div>
     </div>` : ''}
     ${e.ticket ? `
