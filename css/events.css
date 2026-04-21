@@ -190,6 +190,9 @@ h1 span{color:var(--accent)}
 .mas-link{color:#a78bfa}.mas-ticket{color:var(--accent)}.mas-ics{color:#a78bfa}
 .mas-oepnv-hint{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--muted);padding:8px 12px;margin:0 0 4px;background:rgba(251,191,36,.05);border-left:2px solid rgba(251,191,36,.35);border-radius:0 6px 6px 0;line-height:1.5;pointer-events:none;user-select:text}
 .mas-web{color:var(--accent);font-weight:600;letter-spacing:.01em}
+.mas-music-btn{color:#c9a227;font-weight:600;letter-spacing:.02em;border:1px solid rgba(201,162,39,0.4) !important;background:rgba(201,162,39,0.1) !important;border-radius:8px;margin:4px 12px 4px;flex:0 1 auto !important;padding:10px 20px;transition:all .2s}
+.mas-music-btn:hover{background:rgba(201,162,39,0.22) !important;box-shadow:0 0 14px rgba(201,162,39,0.35)}
+.mas-music-btn.playing{color:#e8c84a;background:rgba(201,162,39,0.2) !important;box-shadow:0 0 18px rgba(201,162,39,0.5);animation:music-pulse 1.2s ease-in-out infinite}
 .web-row-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:rgba(232,150,58,.1);border:1px solid rgba(232,150,58,.25);font-size:14px;text-decoration:none;transition:background .15s;flex-shrink:0}
 .web-row-btn:hover{background:rgba(232,150,58,.2)}
 .mas-heart-idle{color:var(--muted)}.mas-heart-active{color:#f43f5e;background:rgba(244,63,94,.07)}
