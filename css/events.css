@@ -180,12 +180,11 @@ h1 span{color:var(--accent)}
 #m-actions{display:flex;flex-direction:column;gap:10px;margin-top:1rem}
 .modal-action-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .mas-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:7px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
-.mas-row{display:flex}
+.mas-row{display:flex;flex-wrap:wrap;gap:1px;background:var(--border)}
 .mas-row-wrap{flex-wrap:wrap;gap:1px;background:var(--border)}
 .mas-row-wrap .mas-btn{flex:1 1 calc(50% - 1px);min-width:110px;border-radius:0}
-.mas-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 14px;border:none;background:transparent;color:var(--text);cursor:pointer;text-decoration:none;transition:background .15s;flex:1;white-space:nowrap}
-.mas-btn:hover{background:rgba(255,255,255,.05)}
-.mas-row .mas-btn:not(:last-child){border-right:1px solid var(--border)}
+.mas-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 14px;border:none;background:var(--surface);color:var(--text);cursor:pointer;text-decoration:none;transition:background .15s;flex:1 1 auto;min-width:100px;white-space:nowrap}
+.mas-btn:hover{background:var(--surface2)}
 .mas-gmaps{color:#4ade80}.mas-apple{color:#60a5fa}.mas-transit{color:#fbbf24}.mas-wa{color:#4ade80}.mas-fb{color:#60a5fa}
 .mas-link{color:#a78bfa}.mas-ticket{color:var(--accent)}.mas-ics{color:#a78bfa}
 .mas-oepnv-hint{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--muted);padding:8px 12px;margin:0 0 4px;background:rgba(251,191,36,.05);border-left:2px solid rgba(251,191,36,.35);border-radius:0 6px 6px 0;line-height:1.5;pointer-events:none;user-select:text}
